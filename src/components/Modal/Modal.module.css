@@ -1,0 +1,39 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeModal {
+  position: absolute;
+    top: 20px;
+    right: 120px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 15px;
+    background-color: rgb(235, 144, 25);
+    fill: rgb(114, 17, 17);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #f1dbba;
+}
+

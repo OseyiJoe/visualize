@@ -1,0 +1,137 @@
+.movieDetails {
+  background-color: rgb(235, 144, 25);
+  border-radius: 4px;
+  box-shadow: 0 0.3em 1em #000;
+  border: 5px solid #f1dbba;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.movieFrame {
+  background-color: rgb(240, 164, 65);
+    border: 3px solid #f1dbba;
+  width: 400px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(114, 17, 17);
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: 'Comic Sans MS';
+}
+
+.movieImage {
+  width: 100%;
+  height: 500px;
+  border-bottom: 3px solid #f1dbba;
+}
+
+.movieOverview {
+  background-color: rgb(240, 164, 65);
+    border: 3px solid #f1dbba;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 5px;
+  font-family: 'Comic Sans MS';
+  color: rgb(114, 17, 17);
+  font-weight: 700;
+}
+
+.movieDetailsList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  background-color: rgb(240, 164, 65);
+  border: 3px solid #f1dbba;
+  border-radius: 8px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.movieLinks {
+  font-family: 'Comic Sans MS';
+  font-weight: 700;
+  text-decoration: none;
+  color: rgb(114, 17, 17);
+}
+
+.movieLinks:hover {
+  background-color: rgb(235, 144, 25);
+  border: 1px solid rgb(114, 17, 17);
+  border-radius: 4px;
+}
+
+.movieName {
+  display: block;
+  padding: 5px;
+  text-align: center;
+}
+
+.arrowBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: rgb(240, 164, 65);
+  fill: rgb(114, 17, 17);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  border: 1px solid rgb(114, 17, 17);
+}
+
+.galleryFrame {
+  position: relative;
+  max-width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+}
+
+.moviePlay{
+
+}
+
+.playBtn{
+  background-color: rgb(235, 144, 25);
+  color: rgb(114, 17, 17);
+  font-family: 'Comic Sans MS';
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgb(114, 17, 17);
+  border-radius: 4px;
+  margin: 5px;
+}
+
+.playBtn:active{
+  color: rgb(114, 17, 17);
+
+}
+
+.play{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  fill: rgb(114, 17, 17);
+  padding: 3px;
+  
+}
+
+.playerFrame{
+  background-color: rgb(240, 164, 65);
+    border: 3px solid #f1dbba;
+  border-radius: 4px;
+  padding: 10px;
+}

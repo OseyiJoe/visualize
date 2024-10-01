@@ -1,0 +1,25 @@
+.feedbackSection {
+  background-color: rgb(235, 144, 25);
+  border: 1px solid rgba(15, 15, 15, 0.3);
+  border: 5px solid #f1dbba;
+  border-radius: 4px;
+  padding: 20px;
+  /*display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;*/
+  font-family: 'Comic Sans MS';
+  font-size: 16px;
+  margin: 20px;
+  /*width: 450px;
+  height: 350px;*/
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+

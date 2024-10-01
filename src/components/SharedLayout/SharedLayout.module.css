@@ -1,0 +1,67 @@
+.signLink{
+    position: relative;
+}
+
+.advert{
+  width: 150px;
+  padding: 4px 8px;
+  border: 2px solid #f1dbba;
+  border:1px solid rgb(114, 17, 17);
+  border-radius: 4px;
+  text-align: center;
+  background-color: rgb(235, 144, 25);
+  color:rgb(114, 17, 17);
+  font-family: 'Comic Sans MS';
+  font-weight: 700;
+  animation-direction: alternate;
+  animation-name: move;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.advertWinner{
+   width: 150px;
+  padding: 4px 8px;
+  border: 2px solid #f1dbba;
+  border:1px solid rgb(114, 17, 17);
+  border-radius: 4px;
+  text-align: center;
+  background-color: rgb(235, 144, 25);
+  color:rgb(114, 17, 17);
+  font-family: 'Comic Sans MS';
+  font-weight: 700;
+  animation-direction: alternate;
+  animation-name: move;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  
+  font-family: 'Comic Sans MS';
+  font-family: 'Sansita Swashed';
+}
+
+
+
+.advertContainer{
+    width: 300px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    
+    border:5px ridge rgb(114, 17, 17);
+    background-color: rgb(240, 164, 65);
+    padding: 10px;
+    border-radius: 4px;
+    
+}
+
+@keyframes move {
+  0% {
+    transform: translatex(0);
+  }
+
+  100% {
+    transform: translatex(120px);
+  }
+}
