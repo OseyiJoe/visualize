@@ -12,7 +12,7 @@ import { UserProvider } from './components/CustomProviderComponent/CustomProvide
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter basename="canine-cove">
+      <BrowserRouter basename="visualize">
         <UserProvider>
           <App />
         </UserProvider>
