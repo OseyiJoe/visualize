@@ -1,14 +1,25 @@
 import { useUser } from '../CustomProviderComponent/CustomProviderComponent';
-import css from './Gallery.module.css';
+import css from './VideoCollection.module.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { useEffect } from 'react';
 import { Button } from '../GalleryButton/Button';
 import { Loader } from '../GalleryLoader/Loader';
 import galleryImage from './gallery.png'
+import { useDispatch } from 'react-redux';
+import { fetchPopularVideos } from '../../redux/Application/operations';
+import { useSelector } from 'react-redux';
+import { selectPopularVideos } from '../../redux/Application/selectors';
 
-export const Gallery = () => {
+
+export const VideoCollection = () => {
+  const dispatch = useDispatch();
   const { catPics } = useUser();
+  const popularVideos = useSelector(selectPopularVideos);
+
+  useEffect(() => {
+    dispatch(fetchPopularVideos());
+  },[])
 
   useEffect(() => {
     const lightbox = new SimpleLightbox('.gallery a', {
@@ -46,14 +57,17 @@ export const Gallery = () => {
         </span>
       </span>
       <div className={css.galleryFrame}>
-        <Loader />
-        {catPics.length !== 0 && (
+        {popularVideos.length !== 0 && (
           <ul className={`${css.movieGallery} gallery`}>
-            {catPics.map(pic => (
-              <li key={pic.id} className={css.movieItem} data-id={pic.id}>
-                <a href={pic.url}>
-                  <img className={css.movieImage} src={pic.url} alt="" />
-                </a>
+            {popularVideos.map(popularVideo => (
+              <li className={css.movieItem}>
+                <video
+                  src={popularVideo.video_files[0].link}
+                  alt="cat, feline, pet"
+                  controls
+                  height="100%"
+                  width="100%"
+                ></video>
               </li>
             ))}
           </ul>
@@ -64,4 +78,4 @@ export const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default VideoCollection;

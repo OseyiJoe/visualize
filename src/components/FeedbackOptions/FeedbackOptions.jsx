@@ -3,18 +3,14 @@ import css from './FeedbackOptions.module.css';
 import PropTypes from 'prop-types';
 //import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { addVote } from '../../redux/operations';
-import { selectVotes } from '../../redux/selectors';
+import { addVote } from '../../redux/Application/operations';
+import { selectVotes } from '../../redux/Application/selectors';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-
-
 export const FeedbackOptions = () => {
-  
   const votes = useSelector(selectVotes);
 
-  
   const {
     countTotalFeedback,
     options,
@@ -27,8 +23,6 @@ export const FeedbackOptions = () => {
   } = useUser();
 
   const total = countTotalFeedback(votes.Scooby, votes.Goofy, votes.Brian);
-
-  
 
   useEffect(() => {
     if (
@@ -61,9 +55,7 @@ export const FeedbackOptions = () => {
       setBrianWins(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [total])
-  
-  
+  }, [total]);
 
   const dispatch = useDispatch();
 
@@ -72,15 +64,14 @@ export const FeedbackOptions = () => {
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 2000);
-    
+
     const votes = JSON.parse(evt.target.getAttribute('data-votes'));
     //console.log(votes);
     //const { name } = evt.target;
 
     dispatch(addVote({ votesVar: votes, name: evt.target.name }));
-    
+
     localStorage.setItem('hasVoted', JSON.stringify(true));
-    
   };
 
   return (

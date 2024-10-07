@@ -1,20 +1,21 @@
-import { useUser } from '../CustomProviderComponent/CustomProviderComponent';
 import { ThreeCircles } from 'react-loader-spinner';
 import css from './Loader.module.css';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { selectLoading } from '../../redux/Application/selectors';
 
 export const Loader = () => {
-  const { galleryLoaded } = useUser();
+  
+  const ifLoading = useSelector(selectLoading);
 
   return (
     <>
-      {galleryLoaded && (
+      {ifLoading && (
         <div className={css.backDrop}>
           <ThreeCircles
             visible={true}
             height="80"
             width="80"
-            color="rgb(235, 144, 25)"
+            color="blue"
             radius="9"
             ariaLabel="three-dots-loading"
             wrapperStyle={{}}
@@ -26,6 +27,4 @@ export const Loader = () => {
   );
 };
 
-Loader.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-};
+

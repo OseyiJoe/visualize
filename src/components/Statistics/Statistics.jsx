@@ -1,10 +1,9 @@
 import css from './Statistics.module.css';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import { selectVotes } from '../../redux/selectors';
+import { selectVotes } from '../../redux/Application/selectors';
 import { useSelector } from 'react-redux';
 import { useUser } from '../CustomProviderComponent/CustomProviderComponent';
-
 
 export const Statistics = ({ children }) => {
   const goodId = nanoid();
@@ -16,7 +15,6 @@ export const Statistics = ({ children }) => {
   const { countTotalFeedback, countPositiveFeedbackPercentage } = useUser();
 
   const votes = useSelector(selectVotes);
-
 
   return (
     <div className={css.statistics}>

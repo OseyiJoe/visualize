@@ -1,0 +1,145 @@
+import css from './Videos.module.css';
+import { Fancybox } from '@fancyapps/ui';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { useEffect } from 'react';
+//import { Button } from '../petTubeButton/Button';
+import { Loader } from '../InitLoader/Loader';
+import vidIcon from './vid.png';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import {
+  selectSearchedVideos,
+  selectSearchedWord,
+  selectLoading,
+  selectPopularVideos,
+} from '../../redux/Application/selectors';
+import { searchVideos, fetchWord } from '../../redux/Application/operations';
+
+export const Videos = () => {
+  const dispatch = useDispatch();
+  const searchedVideos = useSelector(selectSearchedVideos);
+  const searchedWord = useSelector(selectSearchedWord);
+  const ifLoading = useSelector(selectLoading);
+  const popularVideos = useSelector(selectPopularVideos);
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+     evt.target.elements.button.style.boxShadow =
+       'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
+     setTimeout(() => {
+       evt.target.elements.button.style.boxShadow = 'none';
+     }, 2000);
+    const form = evt.target;
+    dispatch(searchVideos(form.elements.searcher.value))
+    dispatch(fetchWord(form.elements.searcher.value));
+    console.log(form.elements.searcher.value);
+  }
+
+  useEffect(() => {
+    Fancybox.bind("[data-fancybox='gallery']", {
+      // Custom options
+    });
+
+    // Cleanup function
+    return () => {
+      Fancybox.destroy();
+    };
+  }, [searchedVideos]);
+
+  return (
+    <main>
+      <span className={css.titleContainer}>
+        <img
+          src={vidIcon}
+          className={css.icon}
+          style={{ width: '100px' }}
+          alt=""
+        />
+
+        <span>
+          <h3 className={css.townOfficialsIntro}>
+            <i>
+              "Create Your Personal Collection from the World’s Best Visuals"
+            </i>
+          </h3>
+        </span>
+
+        <img
+          src={vidIcon}
+          className={css.iconTwo}
+          style={{ width: '100px' }}
+          alt=""
+        />
+      </span>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <input
+          className={css.input}
+          type="text"
+          autoComplete="off"
+          name="searcher"
+          placeholder="Search for Videos"
+        />
+        <button type="submit" name="button" className={css.button}>
+          <span className={css.buttonLabel}>Search</span>
+        </button>
+      </form>
+      <div className={css.galleryFrame}>
+        <Loader />
+        {searchedVideos.length !== 0 && searchedWord !== null ? (
+          <ul className={`${css.movieGallery} gallery`}>
+            {searchedVideos.map(searchedVideo => (
+              <li
+                key={searchedVideo.video_files[2].id}
+                className={css.movieItem}
+              >
+                <a
+                  href={searchedVideo.video_files[0].link}
+                  data-fancybox="gallery"
+                >
+                  <video
+                    className={css.movieImage}
+                    src={searchedVideo.video_files[2].link}
+                    alt={searchedVideo.tags}
+                    controls
+                  ></video>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : searchedVideos.length === 0 && searchedWord === null ? (
+          <ul className={`${css.movieGallery} gallery`}>
+            {popularVideos.map(popularVideo => (
+              <li
+                key={popularVideo.video_files[2].id}
+                className={css.movieItem}
+              >
+                <a
+                  href={popularVideo.video_files[0].link}
+                  data-fancybox="gallery"
+                >
+                  <video
+                    className={css.movieImage}
+                    src={popularVideo.video_files[2].link}
+                    alt="cat, feline, pet"
+                    controls
+                  ></video>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          searchedWord !== null &&
+          ifLoading === false && (
+            <div className={css.message}>
+              <p className={css.messageItem}>
+                No Videos, try another search term
+              </p>
+            </div>
+          )
+        )}
+      </div>
+      {/*<Button />*/}
+    </main>
+  );
+};
+
+export default Videos;

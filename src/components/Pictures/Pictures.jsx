@@ -1,8 +1,8 @@
 import { useUser } from '../CustomProviderComponent/CustomProviderComponent';
-import css from './Library.module.css';
+import css from './Pictures.module.css';
 import { Loader } from '../InitLoader/Loader';
 import { LibraryModal } from '../LibraryModal/LibraryModal';
-import openBookImage from '../Library/open-book.png';
+import openBookImage from './open-book.png';
 
 export const Library = () => {
   const { breedList, handleInfoClick } = useUser();

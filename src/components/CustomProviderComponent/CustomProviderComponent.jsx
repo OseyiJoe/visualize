@@ -13,24 +13,20 @@ import { fetchBreeds } from '../API/Api';
 import { fetchDogByBreed } from '../API/Api';
 import Notiflix from 'notiflix';
 //import { selectVotes } from '../../redux/selectors';
-import { useDispatch} from 'react-redux';
-import { fetchVotes } from '../../redux/operations';
-
+import { useDispatch } from 'react-redux';
+import { fetchVotes } from '../../redux/Application/operations';
 
 const UserContext = createContext();
 
 export const useUser = () => useContext(UserContext);
 
-
 export const UserProvider = ({ children }) => {
   const dispatch = useDispatch();
-  
-useEffect(() => {
-  dispatch(fetchVotes());
-}, [dispatch]);
-  
-  
-  
+
+  useEffect(() => {
+    dispatch(fetchVotes());
+  }, [dispatch]);
+
   //const votes = useSelector(selectVotes);
   //console.log(votes)
 
@@ -68,21 +64,19 @@ useEffect(() => {
   let [dogBreedId, setDogBreedId] = useState();
   const [dogBreedInfo, setDogBreedInfo] = useState({});
   const [dogImage, setDogImage] = useState();
-   const [dogId, setDogId] = useState();
+  const [dogId, setDogId] = useState();
 
-     const countTotalFeedback = (good, neutral, bad) => {
-       return good + neutral + bad;
-     };
+  const countTotalFeedback = (good, neutral, bad) => {
+    return good + neutral + bad;
+  };
 
-     const countPositiveFeedbackPercentage = (good, neutral, bad, digit) => {
-       if (good === 0 && neutral === 0 && bad === 0) {
-         return 0;
-       } else {
-         return (digit / (good + neutral + bad)) * 100;
-       }
-     };
-   
-
+  const countPositiveFeedbackPercentage = (good, neutral, bad, digit) => {
+    if (good === 0 && neutral === 0 && bad === 0) {
+      return 0;
+    } else {
+      return (digit / (good + neutral + bad)) * 100;
+    }
+  };
 
   const options = ['Vote Scooby', 'Vote Goofy', 'Vote Brian'];
   const message = 'No Votes Yet';
@@ -92,8 +86,8 @@ useEffect(() => {
   };
 
   const makingFalse = () => {
-    setToggleSign(false)
-  }
+    setToggleSign(false);
+  };
 
   const clearingFilmName = () => {
     setMovieName('');
@@ -117,7 +111,6 @@ useEffect(() => {
         setCatPageNums(1);
 
         //console.log(response);
-        
       })
       .catch(error => {
         //setLoadingStatus(false);
@@ -222,30 +215,29 @@ useEffect(() => {
       });
   }, []);
 
-    useEffect(() => {
-      //setInitLoader(true);
-      fetchBreeds()
-        .then(response => {
-          if (!response.ok) {
-            /*loaderMsg.classList.add('hide');
+  useEffect(() => {
+    //setInitLoader(true);
+    fetchBreeds()
+      .then(response => {
+        if (!response.ok) {
+          /*loaderMsg.classList.add('hide');
             errorMsg.classList.remove('hide');*/
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(response => {
-          //setBreedList([...response]);
-          const myObj = response.find(item => item.name === dogBreedId);
-          setDogBreedInfo({ ...myObj });
-          //setInitLoader(false);
-          //console.log(response.find(item => item.name === dogBreedId));
-          
-        })
-        .catch(error => {
-          //setInitLoader(false);
-          console.error(`Error message ${error}`);
-        });
-    }, [dogBreedId]);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(response => {
+        //setBreedList([...response]);
+        const myObj = response.find(item => item.name === dogBreedId);
+        setDogBreedInfo({ ...myObj });
+        //setInitLoader(false);
+        //console.log(response.find(item => item.name === dogBreedId));
+      })
+      .catch(error => {
+        //setInitLoader(false);
+        console.error(`Error message ${error}`);
+      });
+  }, [dogBreedId]);
 
   useEffect(() => {
     setLoadingStatus(true);
@@ -263,8 +255,9 @@ useEffect(() => {
         //setCatImage(response[0].url);
         setDogImage(response[0].url);
         //console.log(response);
-        setTimeout(() => { setLoadingStatus(false) }, 1500);
-        
+        setTimeout(() => {
+          setLoadingStatus(false);
+        }, 1500);
       })
       .catch(error => {
         setLoadingStatus(false);
@@ -427,7 +420,7 @@ useEffect(() => {
 
   const handleInfoClose = () => {
     setCatInfo(undefined);
-     //setDogBreedId();
+    //setDogBreedId();
     //setDogId();
     //setDogImage();
     //setDogBreedInfo({});

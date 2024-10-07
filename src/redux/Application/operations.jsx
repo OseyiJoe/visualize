@@ -1,11 +1,46 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createClient } from 'pexels';
+const apiKey = "LvPoIKzvfOmPhNGqaulfHz5WLbcnMNVZlzJmQTDZatGXgU953AqoGVZx";
 
 
 
+const client = createClient(apiKey);
 
 
-axios.defaults.baseURL = 'https://6656017a3c1d3b60293beb10.mockapi.io';
+export const fetchPopularVideos = createAsyncThunk(
+  'videos/fetchPopular',
+  async (_, thunkAPI) => {
+    try {
+      const response = await client.videos.popular({ per_page: 12 });
+      console.log(response.videos);
+      return response.videos;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const searchVideos = createAsyncThunk(
+  'videos/searchVideos',
+  async (query, thunkAPI) => {
+    try {
+      const response = await client.videos.search({ query, per_page: 12 });
+      console.log(response.videos);
+      return response.videos;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const fetchWord = createAsyncThunk(
+  'videos/fetchWord',
+  async (query, thunkAPI) => {
+      console.log(query);
+      return query;
+  }
+);
 
 export const fetchVotes = createAsyncThunk(
   'Polls/fetchAll',
