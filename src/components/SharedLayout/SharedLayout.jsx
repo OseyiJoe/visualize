@@ -50,7 +50,7 @@ export const SharedLayout = () => {
               Videos
             </Link>
             <Link to="/pictures">Pictures</Link>
-            <Link to="/gallery">Video Collection</Link>
+            <Link to="/videoCollection">Video Collection</Link>
             <Link to="/cinema">Picture Collection</Link>
           </nav>
         )}

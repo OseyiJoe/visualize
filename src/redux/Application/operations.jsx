@@ -9,7 +9,7 @@ const client = createClient(apiKey);
 
 
 export const fetchPopularVideos = createAsyncThunk(
-  'videos/fetchPopular',
+  'videos/fetchPopularVideos',
   async (_, thunkAPI) => {
     try {
       const response = await client.videos.popular({ per_page: 12 });
@@ -34,8 +34,42 @@ export const searchVideos = createAsyncThunk(
   }
 );
 
-export const fetchWord = createAsyncThunk(
-  'videos/fetchWord',
+export const fetchVidWord = createAsyncThunk(
+  'videos/fetchVidWord',
+  async (query, thunkAPI) => {
+    console.log(query);
+    return query;
+  }
+);
+
+export const fetchPopularImages = createAsyncThunk(
+  'videos/fetchPopularImages',
+  async (_, thunkAPI) => {
+    try {
+      const response = await client.photos.curated({ per_page: 12 });
+      console.log(response);
+      return response;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const searchImages = createAsyncThunk(
+  'videos/searchImages',
+  async (query, thunkAPI) => {
+    try {
+      const response = await client.photos.search({ query, per_page: 12 });
+      console.log(response);
+      return response;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const fetchImgWord = createAsyncThunk(
+  'videos/fetchImgWord',
   async (query, thunkAPI) => {
       console.log(query);
       return query;

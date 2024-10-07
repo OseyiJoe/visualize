@@ -4,7 +4,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { useEffect } from 'react';
 import { Button } from '../GalleryButton/Button';
-import { Loader } from '../GalleryLoader/Loader';
+//import { Loader } from '../GalleryLoader/Loader';
 import galleryImage from './gallery.png'
 import { useDispatch } from 'react-redux';
 import { fetchPopularVideos } from '../../redux/Application/operations';
@@ -19,6 +19,7 @@ export const VideoCollection = () => {
 
   useEffect(() => {
     dispatch(fetchPopularVideos());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   useEffect(() => {

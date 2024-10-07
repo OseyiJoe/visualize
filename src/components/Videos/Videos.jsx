@@ -9,16 +9,16 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {
   selectSearchedVideos,
-  selectSearchedWord,
+  selectSearchedVidWord,
   selectLoading,
   selectPopularVideos,
 } from '../../redux/Application/selectors';
-import { searchVideos, fetchWord } from '../../redux/Application/operations';
+import { searchVideos, fetchVidWord } from '../../redux/Application/operations';
 
 export const Videos = () => {
   const dispatch = useDispatch();
   const searchedVideos = useSelector(selectSearchedVideos);
-  const searchedWord = useSelector(selectSearchedWord);
+  const searchedVidWord = useSelector(selectSearchedVidWord);
   const ifLoading = useSelector(selectLoading);
   const popularVideos = useSelector(selectPopularVideos);
   const handleSubmit = (evt) => {
@@ -30,7 +30,7 @@ export const Videos = () => {
      }, 2000);
     const form = evt.target;
     dispatch(searchVideos(form.elements.searcher.value))
-    dispatch(fetchWord(form.elements.searcher.value));
+    dispatch(fetchVidWord(form.elements.searcher.value));
     console.log(form.elements.searcher.value);
   }
 
@@ -84,7 +84,7 @@ export const Videos = () => {
       </form>
       <div className={css.galleryFrame}>
         <Loader />
-        {searchedVideos.length !== 0 && searchedWord !== null ? (
+        {searchedVideos.length !== 0 && searchedVidWord !== null ? (
           <ul className={`${css.movieGallery} gallery`}>
             {searchedVideos.map(searchedVideo => (
               <li
@@ -98,14 +98,13 @@ export const Videos = () => {
                   <video
                     className={css.movieImage}
                     src={searchedVideo.video_files[2].link}
-                    alt={searchedVideo.tags}
                     controls
                   ></video>
                 </a>
               </li>
             ))}
           </ul>
-        ) : searchedVideos.length === 0 && searchedWord === null ? (
+        ) : searchedVideos.length === 0 && searchedVidWord === null ? (
           <ul className={`${css.movieGallery} gallery`}>
             {popularVideos.map(popularVideo => (
               <li
@@ -119,7 +118,6 @@ export const Videos = () => {
                   <video
                     className={css.movieImage}
                     src={popularVideo.video_files[2].link}
-                    alt="cat, feline, pet"
                     controls
                   ></video>
                 </a>
@@ -127,7 +125,7 @@ export const Videos = () => {
             ))}
           </ul>
         ) : (
-          searchedWord !== null &&
+          searchedVidWord !== null &&
           ifLoading === false && (
             <div className={css.message}>
               <p className={css.messageItem}>

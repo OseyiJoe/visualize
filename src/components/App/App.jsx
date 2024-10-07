@@ -14,8 +14,10 @@ const Home = lazy(() => import('../Home/Home'));
 const Login = lazy(() => import('../Login/Login'));
 const Register = lazy(() => import('../Register/Register'));
 const Cinema = lazy(() => import('../Cinema/Cinema'));
-const Library = lazy(() => import('../Pictures/Pictures'));
-const Gallery = lazy(() => import('../VideoCollection/VideoCollection'));
+const Pictures = lazy(() => import('../Pictures/Pictures'));
+const VideoCollection = lazy(() =>
+  import('../VideoCollection/VideoCollection')
+);
 const Videos = lazy(() => import('../Videos/Videos'));
 
 export const App = () => {
@@ -57,13 +59,15 @@ export const App = () => {
         />
 
         <Route
-          path="library"
-          element={<SecureRoute redirectTo="/" component={<Library />} />}
+          path="pictures"
+          element={<SecureRoute redirectTo="/" component={<Pictures />} />}
         />
 
         <Route
-          path="gallery"
-          element={<SecureRoute redirectTo="/" component={<Gallery />} />}
+          path="videoCollection"
+          element={
+            <SecureRoute redirectTo="/" component={<VideoCollection />} />
+          }
         />
 
         <Route

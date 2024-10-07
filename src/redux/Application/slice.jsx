@@ -4,7 +4,10 @@ import {
   fetchVotes,
   addVote,
   searchVideos,
-  fetchWord,
+  fetchVidWord,
+  fetchPopularImages,
+  searchImages,
+  fetchImgWord,
 } from './operations';
 
 const handlePending = state => {
@@ -20,13 +23,16 @@ const appSlice = createSlice({
   initialState: {
     popularVideos: [],
     searchedVideos: [],
-    searchWord:null,
+    searchVidWord: null,
+    popularImages: [],
+    searchedImages: [],
+    searchImgWord: null,
     ifLoading: false,
     error: null,
     polls: {
       items: {},
       ifLoading: false,
-      error: null
+      error: null,
     },
   },
   extraReducers: builder => {
@@ -70,9 +76,35 @@ const appSlice = createSlice({
         state.ifLoading = false;
         state.error = action.payload;
       })
-      .addCase(fetchWord.fulfilled, (state, action) => {
+      .addCase(fetchVidWord.fulfilled, (state, action) => {
+        state.searchVidWord = action.payload;
+      })
+      .addCase(fetchPopularImages.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(fetchPopularImages.fulfilled, (state, action) => {
         state.ifLoading = false;
-        state.searchWord = action.payload;
+        state.error = null;
+        state.popularImages = action.payload;
+      })
+      .addCase(fetchPopularImages.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(searchImages.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(searchImages.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.searchedImages = action.payload;
+      })
+      .addCase(searchImages.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchImgWord.fulfilled, (state, action) => {
+        state.searchImgWord = action.payload;
       });
       
   },
