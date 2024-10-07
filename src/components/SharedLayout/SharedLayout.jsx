@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom';
-import { useUser } from '../CustomProviderComponent/CustomProviderComponent';
 import {
   Container,
   Header,
@@ -44,15 +43,22 @@ export const SharedLayout = () => {
           </Logo>
         </Symbol>
         {ifLoggedIn && (
-          <nav>
-            <Link to="/Home">Home</Link>
-            <Link className={css.signLink} to="/videos">
-              Videos
-            </Link>
-            <Link to="/pictures">Pictures</Link>
-            <Link to="/videoCollection">Video Collection</Link>
-            <Link to="/cinema">Picture Collection</Link>
-          </nav>
+          <div className={css.navWrapper}>
+            <nav>
+              <Link to="/Home">Home</Link>
+              <Link className={css.signLink} to="/videos">
+                Videos
+              </Link>
+              <Link to="/pictures">Pictures</Link>
+              <Link to="/videoCollection">Video Collection</Link>
+              <Link to="/cinema">Picture Collection</Link>
+            </nav>
+            <span className={css.navSlogan}>
+              <i>
+                "Create Your Personal Collection from the World’s Best Visuals"
+              </i>
+            </span>
+          </div>
         )}
         {ifLoggedIn && (
           <button className={css.button} onClick={handleClick}>

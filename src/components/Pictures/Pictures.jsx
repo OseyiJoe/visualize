@@ -51,28 +51,28 @@ export const Pictures = () => {
   return (
     <main>
       <span className={css.titleContainer}>
-        <span className={css.iconContainer}>
+        
           <img
             src={imagePic}
             className={css.icon}
             style={{ width: '100px' }}
             alt=""
           />
-        </span>
+      
         <span>
-          <span className={css.movieGalleryLabel}>PetScope</span>
+          <span className={css.movieGalleryLabel}>Pictures</span>
           <span className={css.movieGallerySlogan}>
             <i>Explore the World Through Pictures with PetScope!</i>
           </span>
         </span>
-        <span className={css.iconContainer}>
+        
           <img
             src={imagePic}
             className={css.iconTwo}
             style={{ width: '100px' }}
             alt=""
           />
-        </span>
+        
       </span>
       <form className={css.form} onSubmit={handleSubmit}>
         <input
@@ -88,9 +88,24 @@ export const Pictures = () => {
       </form>
       <div className={css.galleryFrame}>
         <Loader />
-        {searchedImages.length !== 0 ? (
+        {searchedImages.length !== 0 && searchedImgWord !== null ? (
           <ul className={`${css.movieGallery} gallery`}>
             {searchedImages.map(result => (
+              <li key={result.id} className={css.movieItem}>
+                <a href={result.largeImageURL}>
+                  <img
+                    className={css.image}
+                    src={result.webformatURL}
+                    alt={result.tags}
+                    name={result.largeImageURL}
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : searchedImages.length === 0 && searchedImgWord === null ? (
+          <ul className={`${css.movieGallery} gallery`}>
+            {popularImages.map(result => (
               <li key={result.id} className={css.movieItem}>
                 <a href={result.largeImageURL}>
                   <img

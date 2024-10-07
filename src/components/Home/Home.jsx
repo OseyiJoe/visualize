@@ -1,6 +1,4 @@
 import css from './Home.module.css';
-import { addUser } from '../../redux/Auth/operations';
-import { Link } from 'react-router-dom';
 import { Loader } from '../InitLoader/Loader';
 import play from './play.png';
 //import {selectIfLoggedIn,selectIfRegistered} from '../../redux/Auth/selectors';
@@ -30,7 +28,7 @@ export const Home = () => {
   
     useEffect(() => {
       dispatch(fetchPopularVideos());
-    }, []); 
+    }, [dispatch]); 
 
   //const ifLoggedIn = useSelector(selectIfLoggedIn);
   //const ifRegisteredIn = useSelector(selectIfRegistered);
@@ -52,9 +50,6 @@ export const Home = () => {
           className={css.movieGalleryAnimation}
         />
       </span>
-      <h3 className={css.townOfficialsIntro}>
-        <i>"Create Your Personal Collection from the World’s Best Visuals"</i>
-      </h3>
       <div className={css.galleryFrame}>
         <Loader />
         {popularVideos.length !== 0 && (
@@ -71,7 +66,6 @@ export const Home = () => {
                   <video
                     className={css.movieImage}
                     src={popularVideo.video_files[2].link}
-                    alt="cat, feline, pet"
                     controls
                   ></video>
                 </a>

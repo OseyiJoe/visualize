@@ -53,7 +53,7 @@ export const Header = styled.header`
   border-radius: 4px;
   filter: drop-shadow(0px 8px 8px rgba(0, 0, 0, 0.3));
 
-  > nav {
+  > div > nav {
     display: flex;
     align-items: center;
     justify-content: center;
