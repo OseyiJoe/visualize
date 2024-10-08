@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchPopularVideos,
+  fetchSavedVideos,
   fetchVotes,
   addVote,
   searchVideos,
@@ -8,6 +9,7 @@ import {
   fetchPopularImages,
   searchImages,
   fetchImgWord,
+  saveVideos,
 } from './operations';
 
 const handlePending = state => {
@@ -23,6 +25,7 @@ const appSlice = createSlice({
   initialState: {
     popularVideos: [],
     searchedVideos: [],
+    savedVideos: [],
     searchVidWord: null,
     popularImages: [],
     searchedImages: [],
@@ -85,7 +88,7 @@ const appSlice = createSlice({
       .addCase(fetchPopularImages.fulfilled, (state, action) => {
         state.ifLoading = false;
         state.error = null;
-        state.popularImages = action.payload;
+        state.popularImages = action.payload.photos;
       })
       .addCase(fetchPopularImages.rejected, (state, action) => {
         state.ifLoading = false;
@@ -97,7 +100,7 @@ const appSlice = createSlice({
       .addCase(searchImages.fulfilled, (state, action) => {
         state.ifLoading = false;
         state.error = null;
-        state.searchedImages = action.payload;
+        state.searchedImages = action.payload.photos;
       })
       .addCase(searchImages.rejected, (state, action) => {
         state.ifLoading = false;
@@ -105,6 +108,18 @@ const appSlice = createSlice({
       })
       .addCase(fetchImgWord.fulfilled, (state, action) => {
         state.searchImgWord = action.payload;
+      })
+      .addCase(fetchSavedVideos.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(fetchSavedVideos.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.savedVideos = action.payload;
+      })
+      .addCase(fetchSavedVideos.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
       });
       
   },

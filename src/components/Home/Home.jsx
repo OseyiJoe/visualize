@@ -2,13 +2,13 @@ import css from './Home.module.css';
 import { Loader } from '../InitLoader/Loader';
 import play from './play.png';
 //import {selectIfLoggedIn,selectIfRegistered} from '../../redux/Auth/selectors';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { selectPopularVideos } from '../../redux/Application/selectors';
 import { fetchPopularVideos } from '../../redux/Application/operations';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export const Home = () => {
   const dispatch = useDispatch();

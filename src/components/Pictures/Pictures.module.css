@@ -6,35 +6,10 @@
     padding: 8px;
 }
 
-.iconContainer{
-    border: 5px solid #f1dbba;
-    padding: 10px;
-    border-radius: 4px;
-    background-color: #94c751;
-}
 
-
-.iconContainerOne{
-    border: 5px solid #f1dbba;
-    padding: 10px;
-    border-radius: 4px;
-    background-color: #94c751;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position:relative;
-}
-
-.hiddenLink{
-  border: 1px solid rgba(15, 15, 15, 0.1);
-  width: 55px;
-  height:55px;
-   border-radius: 50%;
- position: absolute;
-    z-index: 0;
-    cursor: pointer;
-    right: 20px;
+.image{
+  border-bottom: 3px solid #fff;
+  display: block;
 }
 
 .icon{
@@ -73,17 +48,34 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
   padding: 20px;
-  background-color: #94c751;
+  background-color: #48bdeb;
   border-radius: 4px;
   box-shadow: 0 0.3em 1em #000;
-  border: 5px solid #f1dbba;
-  background-size:cover;
+  border: 5px solid #fff;
   
+}
+
+.movieItem {
+ background-color: rgba(255, 255, 255, 0.5);
+  border: 2px solid #fff;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: 'Comic Sans MS';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition-property: transform;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  background-size:cover;
+  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -93,41 +85,12 @@
   padding: 10px;
   font-weight: 700;
     font-size: 36px;
-    color: rgb(75, 177, 117);
+    color: #fff;
     font-family: 'Comic Sans MS';
     text-shadow: 2px 2px 2px #000000;
 }
 
-.movieGallerySlogan{
-  margin-top: 5px;
-  display:block;
-  text-align: center;
-font-weight: 900;
-  color: rgb(75, 177, 117);
-  font-family: "DM Sans";
-  font-family: 'Comic Sans MS';
-   text-shadow: 1px 1px 1px #000000; 
-}
 
-.movieItem {
-  padding: 30px;
-  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
-  width: 460px;
-  background-color: #c2e297;
-  border: 3px solid #f1dbba;
-  color: green;
-  font-weight: 700;
-  border-radius: 50px;
-  font-family: 'Comic Sans MS';
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition-property: transform;
-  transition-duration: 250ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  
-}
 
 .movieItem:hover {
   transform: scale(1.03);
@@ -174,7 +137,7 @@ font-weight: 900;
   border: 1px solid rgba(15, 15, 15, 0.3);
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
   border-radius: 4px;
-  background-color: #94c751;
+  background-color: #48bdeb;
   font-size: 16px;
   line-height: 1.25;
   letter-spacing: 0.03em;
@@ -183,11 +146,12 @@ font-weight: 900;
   padding-left: 16px;
   font-family: 'Comic Sans MS';
   font-weight: 700;
+  color: blue;
 }
 
 .button {
   margin-left: 12px;
-  background-color: green;
+  background-color: blue;
   box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.3),
       0px 2px 4px -1px rgba(0, 0, 0, 0.2),
       0px 10px 12px -6px rgba(0, 0, 0, 0.4);
@@ -201,4 +165,17 @@ font-weight: 900;
   font-family: 'Comic Sans MS';
   font-weight: 700;
   color:#ffff;
+}
+
+.liker{
+  margin: 5px;
+  padding:5px;
+  background-color: blue;
+  border: 1px solid rgba(15, 15, 15, 0.3);
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: 'Comic Sans MS';
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
 }

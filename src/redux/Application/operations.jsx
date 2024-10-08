@@ -68,6 +68,60 @@ export const searchImages = createAsyncThunk(
   }
 );
 
+export const saveVideos = createAsyncThunk(
+  'videos/saveVideos',
+  async ({video_files}, thunkAPI) => {
+    try {
+      await axios.post('/clientVideos', { video_files });
+
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+
+export const saveImages = createAsyncThunk(
+  'images/fetchSavedImages', // Action type prefix
+  async (pages, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(pages), // Send pages as JSON
+        }
+      );
+
+      // Check if the response is okay (status 200-299)
+      if (!response.ok) {
+        throw new Error('Failed to post saved images');
+      }
+
+      const data = await response.json(); // Parse JSON response
+      return data; // Return data to the reducer
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message); // Handle errors
+    }
+  }
+);
+
+export const fetchSavedVideos = createAsyncThunk(
+  'videos/fetchsaveVideos',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/clientVideos');
+      console.log(response.data);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
 export const fetchImgWord = createAsyncThunk(
   'videos/fetchImgWord',
   async (query, thunkAPI) => {

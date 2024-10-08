@@ -51,7 +51,7 @@ export const SharedLayout = () => {
               </Link>
               <Link to="/pictures">Pictures</Link>
               <Link to="/videoCollection">Video Collection</Link>
-              <Link to="/cinema">Picture Collection</Link>
+              <Link to="/pictureCollection">Picture Collection</Link>
             </nav>
             <span className={css.navSlogan}>
               <i>

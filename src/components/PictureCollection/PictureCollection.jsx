@@ -1,8 +1,8 @@
-import css from './Pictures.module.css';
+import css from './PictureCollection.module.css';
 import { Loader } from '../InitLoader/Loader';
 import { useEffect } from 'react';
 //import { Button } from '../PetScopeButton/Button';
-import imagePic from './photo.png';
+import imagePic from './upload.png';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { useDispatch } from 'react-redux';
@@ -13,9 +13,13 @@ import {
   selectSearchedImages,
   selectPopularImages,
 } from '../../redux/Application/selectors';
-import { searchImages, saveImages, fetchImgWord, fetchPopularImages } from '../../redux/Application/operations';
+import {
+  searchImages,
+  fetchImgWord,
+  fetchPopularImages,
+} from '../../redux/Application/operations';
 
-export const Pictures = () => {
+export const PictureCollection = () => {
   const dispatch = useDispatch();
   const searchedImages = useSelector(selectSearchedImages);
   const searchedImgWord = useSelector(selectSearchedImgWord);
@@ -34,18 +38,6 @@ export const Pictures = () => {
     console.log(form.elements.searcher.value);
   };
 
-   const handlePress = (imageFiles, evt) => {
-     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
-
-     setTimeout(() => {
-       evt.target.style.boxShadow = 'none';
-     }, 2000);
-
-     console.log(imageFiles); // Log the array of video files
-
-     dispatch(saveImages({ image_files: imageFiles }));
-   };
-
   useEffect(() => {
     const lightbox = new SimpleLightbox('.gallery a', {
       captionsData: 'alt',
@@ -62,7 +54,7 @@ export const Pictures = () => {
 
   useEffect(() => {
     dispatch(fetchPopularImages());
-  }, [dispatch]); 
+  }, [dispatch]);
 
   return (
     <main>
@@ -111,12 +103,6 @@ export const Pictures = () => {
                     alt={searchedImage.alt}
                   />
                 </a>
-                <button
-                  className={css.liker}
-                  onClick={evt => handlePress(searchedImage, evt)}
-                >
-                  Save
-                </button>
               </li>
             ))}
           </ul>
@@ -131,12 +117,6 @@ export const Pictures = () => {
                     alt={popularImage.alt}
                   />
                 </a>
-                <button
-                  className={css.liker}
-                  onClick={evt => handlePress(popularImage, evt)}
-                >
-                  Save
-                </button>
               </li>
             ))}
           </ul>
@@ -156,5 +136,4 @@ export const Pictures = () => {
   );
 };
 
-export default Pictures;
-
+export default PictureCollection;

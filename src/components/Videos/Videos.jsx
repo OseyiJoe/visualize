@@ -13,7 +13,11 @@ import {
   selectLoading,
   selectPopularVideos,
 } from '../../redux/Application/selectors';
-import { searchVideos, fetchVidWord } from '../../redux/Application/operations';
+import {
+  searchVideos,
+  fetchVidWord,
+  saveVideos,
+} from '../../redux/Application/operations';
 
 export const Videos = () => {
   const dispatch = useDispatch();
@@ -33,6 +37,17 @@ export const Videos = () => {
     dispatch(fetchVidWord(form.elements.searcher.value));
     console.log(form.elements.searcher.value);
   }
+ const handlePress = (videoFiles, evt) => {
+   evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
+
+   setTimeout(() => {
+     evt.target.style.boxShadow = 'none';
+   }, 2000);
+
+   console.log(videoFiles); // Log the array of video files
+
+   dispatch(saveVideos({ video_files: videoFiles }));
+ };
 
   useEffect(() => {
     Fancybox.bind("[data-fancybox='gallery']", {
@@ -56,11 +71,7 @@ export const Videos = () => {
         />
 
         <span>
-          <h3 className={css.townOfficialsIntro}>
-            <i>
-              "Create Your Personal Collection from the World’s Best Visuals"
-            </i>
-          </h3>
+          <span className={css.movieGalleryLabel}>Videos</span>
         </span>
 
         <img
@@ -101,6 +112,13 @@ export const Videos = () => {
                     controls
                   ></video>
                 </a>
+                <button
+                  className={css.liker}
+                  data-id1={searchedVideo.video_files}
+                  onClick={evt => handlePress(searchedVideo.video_files, evt)}
+                >
+                  Save
+                </button>
               </li>
             ))}
           </ul>
@@ -121,6 +139,13 @@ export const Videos = () => {
                     controls
                   ></video>
                 </a>
+                <button
+                  className={css.liker}
+                  data-id1={popularVideo.video_files}
+                  onClick={evt => handlePress(popularVideo.video_files, evt)}
+                >
+                  Save
+                </button>
               </li>
             ))}
           </ul>

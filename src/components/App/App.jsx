@@ -13,7 +13,9 @@ import {selectIfRefreshing} from '../../redux/Auth/selectors';
 const Home = lazy(() => import('../Home/Home'));
 const Login = lazy(() => import('../Login/Login'));
 const Register = lazy(() => import('../Register/Register'));
-const Cinema = lazy(() => import('../Cinema/Cinema'));
+const PictureCollection = lazy(() =>
+  import('../PictureCollection/PictureCollection')
+);
 const Pictures = lazy(() => import('../Pictures/Pictures'));
 const VideoCollection = lazy(() =>
   import('../VideoCollection/VideoCollection')
@@ -54,8 +56,10 @@ export const App = () => {
         />
 
         <Route
-          path="cinema"
-          element={<SecureRoute redirectTo="/" component={<Cinema />} />}
+          path="pictureCollection"
+          element={
+            <SecureRoute redirectTo="/" component={<PictureCollection />} />
+          }
         />
 
         <Route

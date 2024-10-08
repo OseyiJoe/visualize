@@ -10,6 +10,8 @@ export const selectSearchedVideos = state => state.app.searchedVideos;
 
 export const selectSearchedImages = state => state.app.searchedImages;
 
+export const selectSavedVideos = state => state.app.savedVideos;
+
 export const selectSearchedVidWord = state => state.app.searchVidWord;
 
 export const selectSearchedImgWord = state => state.app.searchImgWord;
