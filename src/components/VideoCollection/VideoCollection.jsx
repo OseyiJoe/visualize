@@ -6,7 +6,10 @@ import { useEffect } from 'react';
 import { Loader } from '../InitLoader/Loader';
 import videoFolder from './video-folder.png'
 import { useDispatch } from 'react-redux';
-import {fetchSavedVideos} from '../../redux/Application/operations';
+import {
+  fetchSavedVideos,
+  deleteVideos,
+} from '../../redux/Application/operations';
 import { useSelector } from 'react-redux';
 import {selectSavedVideos} from '../../redux/Application/selectors';
 
@@ -14,6 +17,16 @@ import {selectSavedVideos} from '../../redux/Application/selectors';
 export const VideoCollection = () => {
   const dispatch = useDispatch();
   const savedVideos = useSelector(selectSavedVideos);
+
+   const handlePress = evt => {
+     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
+     setTimeout(() => {
+       evt.target.style.boxShadow = 'none';
+     }, 2000);
+     const myId = evt.target.name;
+     console.log(myId);
+     dispatch(deleteVideos(myId));
+   };
 
 
  useEffect(() => {
@@ -34,29 +47,27 @@ export const VideoCollection = () => {
   return (
     <main>
       <span className={css.titleContainer}>
-        
-          <img
-            src={videoFolder}
-            className={css.icon}
-            style={{ width: '100px' }}
-            alt=""
-          />
-        
+        <img
+          src={videoFolder}
+          className={css.icon}
+          style={{ width: '100px' }}
+          alt=""
+        />
+
         <span>
-          <span className={css.movieGalleryLabel}>Pictures</span>
+          <span className={css.movieGalleryLabel}>Videos</span>
         </span>
-        
-          <img
-            src={videoFolder}
-            className={css.iconTwo}
-            style={{ width: '100px' }}
-            alt=""
-          />
-        
+
+        <img
+          src={videoFolder}
+          className={css.iconTwo}
+          style={{ width: '100px' }}
+          alt=""
+        />
       </span>
       <div className={css.galleryFrame}>
-        <Loader/>
-        {savedVideos.length !== 0 && (
+        <Loader />
+        {savedVideos.length !== 0 ? (
           <ul className={`${css.movieGallery} gallery`}>
             {savedVideos.map(searchedVideo => (
               <li
@@ -73,9 +84,18 @@ export const VideoCollection = () => {
                     controls
                   ></video>
                 </a>
+                <button
+                  className={css.liker}
+                  name={searchedVideo.id}
+                  onClick={handlePress}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
+        ) : (
+          <div className={css.message}>Your collection is empty</div>
         )}
       </div>
     </main>

@@ -7,35 +7,25 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import {selectSavedImages} from '../../redux/Application/selectors';
 import {
-  selectLoading,
-  selectSearchedImgWord,
-  selectSearchedImages,
-  selectPopularImages,
-} from '../../redux/Application/selectors';
-import {
-  searchImages,
-  fetchImgWord,
-  fetchPopularImages,
+  fetchSavedImages,
+  deleteImages,
 } from '../../redux/Application/operations';
 
 export const PictureCollection = () => {
   const dispatch = useDispatch();
-  const searchedImages = useSelector(selectSearchedImages);
-  const searchedImgWord = useSelector(selectSearchedImgWord);
-  const ifLoading = useSelector(selectLoading);
-  const popularImages = useSelector(selectPopularImages);
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    evt.target.elements.button.style.boxShadow =
+  const savedImages = useSelector(selectSavedImages);
+
+  const handlePress = evt => {
+    evt.target.style.boxShadow =
       'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
     setTimeout(() => {
-      evt.target.elements.button.style.boxShadow = 'none';
+      evt.target.style.boxShadow = 'none';
     }, 2000);
-    const form = evt.target;
-    dispatch(searchImages(form.elements.searcher.value));
-    dispatch(fetchImgWord(form.elements.searcher.value));
-    console.log(form.elements.searcher.value);
+    const myId = evt.target.name;
+    console.log(myId);
+    dispatch(deleteImages(myId));
   };
 
   useEffect(() => {
@@ -50,10 +40,10 @@ export const PictureCollection = () => {
     return () => {
       lightbox.destroy();
     };
-  }, [searchedImages]);
+  }, [savedImages]);
 
   useEffect(() => {
-    dispatch(fetchPopularImages());
+    dispatch(fetchSavedImages());
   }, [dispatch]);
 
   return (
@@ -77,58 +67,32 @@ export const PictureCollection = () => {
           alt=""
         />
       </span>
-      <form className={css.form} onSubmit={handleSubmit}>
-        <input
-          className={css.input}
-          type="text"
-          autoComplete="off"
-          name="searcher"
-          placeholder="Search for Pictures"
-        />
-        <button type="submit" name="button" className={css.button}>
-          <span className={css.buttonLabel}>Search</span>
-        </button>
-      </form>
       <div className={css.galleryFrame}>
         <Loader />
-        {console.log(searchedImages.photos)}
-        {searchedImages.length !== 0 && searchedImgWord !== null ? (
+        {console.log(savedImages)}
+        {savedImages.length !== 0 ? (
           <ul className={`${css.movieGallery} gallery`}>
-            {searchedImages.map(searchedImage => (
-              <li key={searchedImage.id} className={css.movieItem}>
-                <a href={searchedImage.src.landscape}>
+            {savedImages.map(savedImage => (
+              <li key={savedImage.image_files.id} className={css.movieItem}>
+                <a href={savedImage.image_files.src.landscape}>
                   <img
                     className={css.image}
-                    src={searchedImage.src.medium}
-                    alt={searchedImage.alt}
+                    src={savedImage.image_files.src.medium}
+                    alt={savedImage.image_files.alt}
                   />
                 </a>
-              </li>
-            ))}
-          </ul>
-        ) : searchedImages.length === 0 && searchedImgWord === null ? (
-          <ul className={`${css.movieGallery} gallery`}>
-            {popularImages.map(popularImage => (
-              <li key={popularImage.id} className={css.movieItem}>
-                <a href={popularImage.src.landscape}>
-                  <img
-                    className={css.image}
-                    src={popularImage.src.medium}
-                    alt={popularImage.alt}
-                  />
-                </a>
+                <button
+                  className={css.liker}
+                  name={savedImage.id}
+                  onClick={handlePress}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
         ) : (
-          searchedImgWord !== null &&
-          ifLoading === false && (
-            <div className={css.message}>
-              <p className={css.messageItem}>
-                No Videos, try another search term
-              </p>
-            </div>
-          )
+          <div className={css.message}>Your collection is empty</div>
         )}
       </div>
       {/*<Button />*/}

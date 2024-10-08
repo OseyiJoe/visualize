@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchPopularVideos,
   fetchSavedVideos,
+  fetchSavedImages,
   fetchVotes,
   addVote,
   searchVideos,
@@ -9,7 +10,8 @@ import {
   fetchPopularImages,
   searchImages,
   fetchImgWord,
-  saveVideos,
+  deleteImages,
+  deleteVideos
 } from './operations';
 
 const handlePending = state => {
@@ -26,6 +28,7 @@ const appSlice = createSlice({
     popularVideos: [],
     searchedVideos: [],
     savedVideos: [],
+    savedImages: [],
     searchVidWord: null,
     popularImages: [],
     searchedImages: [],
@@ -120,8 +123,51 @@ const appSlice = createSlice({
       .addCase(fetchSavedVideos.rejected, (state, action) => {
         state.ifLoading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchSavedImages.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(fetchSavedImages.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.savedImages = action.payload;
+      })
+      .addCase(fetchSavedImages.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteImages.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(deleteImages.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        console.log(state.savedImages);
+        const myIndex = state.savedImages.findIndex(
+          image => image.id === action.payload
+        );
+        state.savedImages.splice(myIndex, 1);
+      })
+      .addCase(deleteImages.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteVideos.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(deleteVideos.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        
+        const myIndex = state.savedVideos.findIndex(
+          video => video.id === action.payload
+        );
+        state.savedVideos.splice(myIndex, 1);
+      })
+      .addCase(deleteVideos.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
       });
-      
   },
 });
 

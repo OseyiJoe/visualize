@@ -72,6 +72,13 @@
     text-shadow: 2px 2px 2px #000000;
 }
 
+.message{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Comic Sans Ms";
+  font-weight: 700;
+}
 
 
 
@@ -104,4 +111,17 @@
   max-width: 1300px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.liker{
+  margin: 5px;
+  padding:5px;
+  background-color: blue;
+  border: 1px solid rgba(15, 15, 15, 0.3);
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: 'Comic Sans MS';
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
 }

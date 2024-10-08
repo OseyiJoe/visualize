@@ -24,7 +24,10 @@ export const fetchPopularVideos = createAsyncThunk(
 export const searchVideos = createAsyncThunk(
   'videos/searchVideos',
   async (query, thunkAPI) => {
+   
     try {
+       
+      
       const response = await client.videos.search({ query, per_page: 12 });
       console.log(response.videos);
       return response.videos;
@@ -80,9 +83,21 @@ export const saveVideos = createAsyncThunk(
   }
 );
 
+export const deleteVideos = createAsyncThunk(
+  'videos/deleteVideos', 
+  async (vidId, thunkAPI) => {
+    try {
+      await axios.delete(`/clientVideos/${vidId}`); 
+      return vidId; 
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
 
 export const saveImages = createAsyncThunk(
-  'images/fetchSavedImages', // Action type prefix
+  'images/saveImages', 
   async (pages, thunkAPI) => {
     try {
       const response = await fetch(
@@ -92,19 +107,67 @@ export const saveImages = createAsyncThunk(
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(pages), // Send pages as JSON
+          body: JSON.stringify(pages), 
         }
       );
 
-      // Check if the response is okay (status 200-299)
+      
       if (!response.ok) {
         throw new Error('Failed to post saved images');
       }
 
-      const data = await response.json(); // Parse JSON response
-      return data; // Return data to the reducer
+      const data = await response.json(); 
+      
+      return data; 
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message); // Handle errors
+      return thunkAPI.rejectWithValue(error.message); 
+    }
+  }
+);
+
+export const fetchSavedImages = createAsyncThunk(
+  'images/fetchImages', 
+  async (_, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`
+      );
+
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch images');
+      }
+
+      const data = await response.json(); 
+      console.log(data);
+      return data; 
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message); 
+    }
+  }
+);
+
+
+export const deleteImages = createAsyncThunk(
+  'images/deleteImage', 
+  async (myId, thunkAPI) => {
+    console.log(myId);
+    try {
+      const response = await fetch(
+        `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages/${myId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete image');
+      }
+
+      return myId; 
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message); 
     }
   }
 );

@@ -3,7 +3,10 @@ import { Loader } from '../InitLoader/Loader';
 import play from './play.png';
 //import {selectIfLoggedIn,selectIfRegistered} from '../../redux/Auth/selectors';
 import { selectPopularVideos } from '../../redux/Application/selectors';
-import { fetchPopularVideos } from '../../redux/Application/operations';
+import {
+  fetchPopularVideos,
+  saveVideos,
+} from '../../redux/Application/operations';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { useEffect } from 'react';
@@ -12,7 +15,19 @@ import { useDispatch } from 'react-redux';
 
 export const Home = () => {
   const dispatch = useDispatch();
-   const popularVideos = useSelector(selectPopularVideos);
+  const popularVideos = useSelector(selectPopularVideos);
+  
+    const handlePress = (videoFiles, evt) => {
+      evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
+
+      setTimeout(() => {
+        evt.target.style.boxShadow = 'none';
+      }, 2000);
+
+      console.log(videoFiles); // Log the array of video files
+
+      dispatch(saveVideos({ video_files: videoFiles }));
+    };
 
  
     useEffect(() => {
@@ -69,6 +84,12 @@ export const Home = () => {
                     controls
                   ></video>
                 </a>
+                <button
+                  className={css.liker}
+                  onClick={evt => handlePress(popularVideo.video_files, evt)}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
