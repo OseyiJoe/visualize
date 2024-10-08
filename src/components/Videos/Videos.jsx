@@ -2,7 +2,6 @@ import css from './Videos.module.css';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { useEffect } from 'react';
-//import { Button } from '../petTubeButton/Button';
 import { Loader } from '../InitLoader/Loader';
 import vidIcon from './vid.png';
 import { useDispatch } from 'react-redux';
@@ -17,6 +16,7 @@ import {
   searchVideos,
   fetchVidWord,
   saveVideos,
+  searchMoreVideos
 } from '../../redux/Application/operations';
 
 export const Videos = () => {
@@ -25,6 +25,7 @@ export const Videos = () => {
   const searchedVidWord = useSelector(selectSearchedVidWord);
   const ifLoading = useSelector(selectLoading);
   const popularVideos = useSelector(selectPopularVideos);
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
      evt.target.elements.button.style.boxShadow =
@@ -37,6 +38,16 @@ export const Videos = () => {
     dispatch(fetchVidWord(form.elements.searcher.value));
     console.log(form.elements.searcher.value);
   }
+
+  const handleButtonPress = (evt) => {
+     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
+
+     setTimeout(() => {
+       evt.target.style.boxShadow = 'none';
+     }, 2000);
+    dispatch(searchMoreVideos(searchedVidWord));
+  }
+
  const handlePress = (videoFiles, evt) => {
    evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
 
@@ -160,7 +171,13 @@ export const Videos = () => {
           )
         )}
       </div>
-      {/*<Button />*/}
+      <div className={css.buttonWrapper}>
+        {searchedVideos.length !== 0 ? (
+          <button onClick={handleButtonPress} className={css.loadBtn}>
+            Load More
+          </button>
+        ) : null}
+      </div>
     </main>
   );
 };

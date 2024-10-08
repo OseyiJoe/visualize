@@ -2,7 +2,6 @@ import css from './VideoCollection.module.css';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { useEffect } from 'react';
-//import { Button } from '../GalleryButton/Button';
 import { Loader } from '../InitLoader/Loader';
 import videoFolder from './video-folder.png'
 import { useDispatch } from 'react-redux';

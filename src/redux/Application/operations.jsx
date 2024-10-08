@@ -21,14 +21,81 @@ export const fetchPopularVideos = createAsyncThunk(
   }
 );
 
+export const fetchMorePopularVideos = createAsyncThunk(
+  'videos/fetchMorePopularVideos',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+
+    const popularVidNmu = state.app.popularVidNmu;
+
+
+    const moreVids = popularVidNmu + 12;
+    try {
+      const response = await client.videos.popular({ per_page: moreVids });
+      console.log(response.videos);
+      return response.videos;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
 export const searchVideos = createAsyncThunk(
   'videos/searchVideos',
   async (query, thunkAPI) => {
-   
+     const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+    
+     if (persistedToken === null) {
+       return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+  
     try {
-       
-      
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (myClient.length === 0) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      //const apiKey = myClient.apiKey, then validate
       const response = await client.videos.search({ query, per_page: 12 });
+      console.log(response.videos);
+      return response.videos;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const searchMoreVideos = createAsyncThunk(
+  'videos/searchMoreVideos',
+  async (query, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+
+    const searchVidNmu = state.app.searchVidNmu;
+    
+
+    const moreVids = searchVidNmu + 12;
+
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+
+    try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (myClient.length === 0) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      //const apiKey = myClient.apiKey, then validate
+      const response = await client.videos.search({
+        query,
+        per_page: moreVids,
+      });
       console.log(response.videos);
       return response.videos;
     } catch (e) {
@@ -58,11 +125,77 @@ export const fetchPopularImages = createAsyncThunk(
   }
 );
 
+export const fetchMorePopularImages = createAsyncThunk(
+  'videos/fetchMorePopularImages',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+
+    const popularImgNmu = state.app.popularImgNmu;
+
+    const moreImgs = popularImgNmu + 12;
+    try {
+      const response = await client.photos.curated({ per_page: moreImgs });
+      console.log(response);
+      return response;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
 export const searchImages = createAsyncThunk(
   'videos/searchImages',
   async (query, thunkAPI) => {
+ const state = thunkAPI.getState();
+ const persistedToken = state.auth.token;
+
+ if (persistedToken === null) {
+   return thunkAPI.rejectWithValue('Unable to fetch user');
+ }
     try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (myClient.length === 0) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      //const apiKey = myClient.apiKey, then validate
       const response = await client.photos.search({ query, per_page: 12 });
+      console.log(response);
+      return response;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const searchMoreImages = createAsyncThunk(
+  'videos/searchMoreImages',
+  async (query, thunkAPI) => {
+      const state = thunkAPI.getState();
+      const persistedToken = state.auth.token;
+
+      const searchImgNmu = state.app.searchImgNmu;
+
+      const moreImgs = searchImgNmu + 12;
+
+      if (persistedToken === null) {
+        return thunkAPI.rejectWithValue('Unable to fetch user');
+      }
+
+    try {
+       const res = await axios.get('/clientData');
+       const clients = res.data;
+       const myClient = clients.find(client => client.token === persistedToken);
+       if (myClient.length === 0) {
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+       }
+      const response = await client.photos.search({
+        query,
+        per_page: moreImgs,
+      });
       console.log(response);
       return response;
     } catch (e) {
@@ -73,9 +206,23 @@ export const searchImages = createAsyncThunk(
 
 export const saveVideos = createAsyncThunk(
   'videos/saveVideos',
-  async ({video_files}, thunkAPI) => {
+  async ({ video_files }, thunkAPI) => {
+     const state = thunkAPI.getState();
+     const persistedToken = state.auth.token;
+
+     if (persistedToken === null) {
+       return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+    
     try {
-      await axios.post('/clientVideos', { video_files });
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (myClient.length === 0) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      await axios.post('/clientVideos', { video_files, owner: myClient.token });
 
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -98,8 +245,21 @@ export const deleteVideos = createAsyncThunk(
 
 export const saveImages = createAsyncThunk(
   'images/saveImages', 
-  async (pages, thunkAPI) => {
+  async ({ image_files }, thunkAPI) => {
+      const state = thunkAPI.getState();
+      const persistedToken = state.auth.token;
+
+      if (persistedToken === null) {
+        return thunkAPI.rejectWithValue('Unable to fetch user');
+      }
     try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (myClient.length === 0) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
       const response = await fetch(
         `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`,
         {
@@ -107,7 +267,7 @@ export const saveImages = createAsyncThunk(
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(pages), 
+          body: JSON.stringify({ image_files, owner: myClient.token }),
         }
       );
 
@@ -128,7 +288,21 @@ export const saveImages = createAsyncThunk(
 export const fetchSavedImages = createAsyncThunk(
   'images/fetchImages', 
   async (_, thunkAPI) => {
+     const state = thunkAPI.getState();
+     const persistedToken = state.auth.token;
+
+     if (persistedToken === null) {
+       return thunkAPI.rejectWithValue('Unable to fetch user');
+     }
     try {
+       const res = await axios.get('/clientData');
+       const clients = res.data;
+       const myClient = clients.find(client => client.token === persistedToken);
+       if (myClient.length === 0) {
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+       }
+
       const response = await fetch(
         `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`
       );
@@ -139,8 +313,9 @@ export const fetchSavedImages = createAsyncThunk(
       }
 
       const data = await response.json(); 
-      console.log(data);
-      return data; 
+      const myData = data.filter(data => data.owner === myClient.token);
+      console.log(myData);
+      return myData;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message); 
     }
@@ -175,10 +350,26 @@ export const deleteImages = createAsyncThunk(
 export const fetchSavedVideos = createAsyncThunk(
   'videos/fetchsaveVideos',
   async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+
     try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (myClient.length === 0) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
       const response = await axios.get('/clientVideos');
-      console.log(response.data);
-      return response.data;
+      //console.log(response.data);
+      const myData = response.data.filter(data => data.owner === myClient.token);
+      console.log(myData)
+      return myData;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }

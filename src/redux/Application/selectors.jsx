@@ -8,6 +8,8 @@ export const selectPopularImages = state => state.app.popularImages;
 
 export const selectSearchedVideos = state => state.app.searchedVideos;
 
+export const selectSearchedVideosNum = state => state.app.searchVidNmu;
+
 export const selectSearchedImages = state => state.app.searchedImages;
 
 export const selectSavedVideos = state => state.app.savedVideos;

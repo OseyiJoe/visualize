@@ -179,3 +179,24 @@
   border-radius: 30px;
   cursor: pointer;
 }
+
+.buttonWrapper{
+  text-align: center;
+  margin: 10px;
+}
+
+.loadBtn{
+  background-color: blue;
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 10px 12px -6px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 28px;
+  padding-right: 28px;
+  border: 1px solid rgba(15, 15, 15, 0.3);
+  font-family: 'Comic Sans MS';
+  font-weight: 700;
+  color:#ffff;}

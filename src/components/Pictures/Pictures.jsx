@@ -1,7 +1,6 @@
 import css from './Pictures.module.css';
 import { Loader } from '../InitLoader/Loader';
 import { useEffect } from 'react';
-//import { Button } from '../PetScopeButton/Button';
 import imagePic from './photo.png';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -13,7 +12,12 @@ import {
   selectSearchedImages,
   selectPopularImages,
 } from '../../redux/Application/selectors';
-import { searchImages, saveImages, fetchImgWord, fetchPopularImages } from '../../redux/Application/operations';
+import {
+  searchImages,
+  saveImages,
+  fetchImgWord,
+  searchMoreImages,
+} from '../../redux/Application/operations';
 
 export const Pictures = () => {
   const dispatch = useDispatch();
@@ -33,6 +37,16 @@ export const Pictures = () => {
     dispatch(fetchImgWord(form.elements.searcher.value));
     console.log(form.elements.searcher.value);
   };
+
+  const handleButtonPress = (evt) => {
+    evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
+
+    setTimeout(() => {
+      evt.target.style.boxShadow = 'none';
+    }, 2000);
+    dispatch(searchMoreImages(searchedImgWord));
+
+  }
 
    const handlePress = (imageFiles, evt) => {
      evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
@@ -60,9 +74,9 @@ export const Pictures = () => {
     };
   }, [searchedImages]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(fetchPopularImages());
-  }, [dispatch]); 
+  }, [dispatch]); */
 
   return (
     <main>
@@ -151,7 +165,13 @@ export const Pictures = () => {
           )
         )}
       </div>
-      {/*<Button />*/}
+      <div className={css.buttonWrapper}>
+        {searchedImages.length !== 0 ? (
+          <button onClick={handleButtonPress} className={css.loadBtn}>
+            Load More
+          </button>
+        ) : null}
+      </div>
     </main>
   );
 };

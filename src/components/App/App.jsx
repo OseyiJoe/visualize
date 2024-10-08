@@ -8,7 +8,11 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { refreshUser } from '../../redux/Auth/operations';
 import { useSelector } from 'react-redux';
-import {selectIfRefreshing} from '../../redux/Auth/selectors';
+import { selectIfRefreshing } from '../../redux/Auth/selectors';
+import {
+  fetchPopularVideos,
+  fetchPopularImages,
+} from '../../redux/Application/operations';
 
 const Home = lazy(() => import('../Home/Home'));
 const Login = lazy(() => import('../Login/Login'));
@@ -27,6 +31,8 @@ export const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(refreshUser());
+    dispatch(fetchPopularVideos());
+    dispatch(fetchPopularImages());
   }, [dispatch]);
 
   return ifRefreshing ? (

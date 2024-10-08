@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchPopularVideos,
+  fetchMorePopularVideos,
   fetchSavedVideos,
   fetchSavedImages,
   fetchVotes,
@@ -8,10 +9,13 @@ import {
   searchVideos,
   fetchVidWord,
   fetchPopularImages,
+  //fetchMorePopularImages,
+  searchMoreImages,
   searchImages,
   fetchImgWord,
   deleteImages,
-  deleteVideos
+  deleteVideos,
+  searchMoreVideos,
 } from './operations';
 
 const handlePending = state => {
@@ -35,6 +39,10 @@ const appSlice = createSlice({
     searchImgWord: null,
     ifLoading: false,
     error: null,
+    searchVidNmu: 0,
+    popularVidNmu: 0,
+    searchImgNmu: 0,
+    popularImgNmu: 0,
     polls: {
       items: {},
       ifLoading: false,
@@ -65,11 +73,27 @@ const appSlice = createSlice({
         state.ifLoading = false;
         state.error = null;
         state.popularVideos = action.payload;
+        state.popularVidNmu = state.popularVideos.length;
       })
       .addCase(fetchPopularVideos.rejected, (state, action) => {
         state.ifLoading = false;
         state.error = action.payload;
       })
+
+      .addCase(fetchMorePopularVideos.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(fetchMorePopularVideos.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.popularVideos = action.payload;
+        state.popularVidNmu = state.popularVideos.length;
+      })
+      .addCase(fetchMorePopularVideos.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+
       .addCase(searchVideos.pending, state => {
         state.ifLoading = true;
       })
@@ -77,11 +101,27 @@ const appSlice = createSlice({
         state.ifLoading = false;
         state.error = null;
         state.searchedVideos = action.payload;
+        state.searchVidNmu = state.searchedVideos.length;
       })
       .addCase(searchVideos.rejected, (state, action) => {
         state.ifLoading = false;
         state.error = action.payload;
       })
+
+      .addCase(searchMoreVideos.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(searchMoreVideos.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.searchedVideos = action.payload;
+        state.searchVidNmu = state.searchedVideos.length;
+      })
+      .addCase(searchMoreVideos.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+
       .addCase(fetchVidWord.fulfilled, (state, action) => {
         state.searchVidWord = action.payload;
       })
@@ -92,11 +132,13 @@ const appSlice = createSlice({
         state.ifLoading = false;
         state.error = null;
         state.popularImages = action.payload.photos;
+        state.popularImgNmu = state.popularImages.length;
       })
       .addCase(fetchPopularImages.rejected, (state, action) => {
         state.ifLoading = false;
         state.error = action.payload;
       })
+
       .addCase(searchImages.pending, state => {
         state.ifLoading = true;
       })
@@ -104,11 +146,27 @@ const appSlice = createSlice({
         state.ifLoading = false;
         state.error = null;
         state.searchedImages = action.payload.photos;
+        state.searchImgNmu = state.searchedImages.length;
       })
       .addCase(searchImages.rejected, (state, action) => {
         state.ifLoading = false;
         state.error = action.payload;
       })
+
+      .addCase(searchMoreImages.pending, state => {
+        state.ifLoading = true;
+      })
+      .addCase(searchMoreImages.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.searchedImages = action.payload.photos;
+        state.searchImgNmu = state.searchedImages.length;
+      })
+      .addCase(searchMoreImages.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+
       .addCase(fetchImgWord.fulfilled, (state, action) => {
         state.searchImgWord = action.payload;
       })
@@ -158,7 +216,7 @@ const appSlice = createSlice({
       .addCase(deleteVideos.fulfilled, (state, action) => {
         state.ifLoading = false;
         state.error = null;
-        
+
         const myIndex = state.savedVideos.findIndex(
           video => video.id === action.payload
         );
