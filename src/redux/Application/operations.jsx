@@ -163,6 +163,16 @@ export const searchVideos = createAsyncThunk(
         error.status = 401;
         throw error;
       }
+       const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
+      if (isValidKey) {
+        console.log('The API key is valid!');
+      } else {
+        alert('Go to homepage and create an API KEY to use this');
+        console.log('Invalid API key!');
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+         throw error;
+      }
       const response = await client.videos.search({ query, per_page: 12 });
       console.log(response.videos);
       return response.videos;
@@ -196,7 +206,7 @@ export const searchMoreVideos = createAsyncThunk(
         error.status = 401;
         throw error;
       }
-      //const apiKey = myClient.apiKey, then validate
+      //
       const response = await client.videos.search({
         query,
         per_page: moreVids,
@@ -272,6 +282,17 @@ export const searchImages = createAsyncThunk(
         error.status = 401;
         throw error;
       }
+
+       const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
+       if (isValidKey) {
+         console.log('The API key is valid!');
+       } else {
+         alert('Go to homepage and create an API KEY to use this');
+         console.log('Invalid API key!');
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+         throw error;
+       }
       
       const response = await client.photos.search({ query, per_page: 12 });
       console.log(response);
@@ -342,6 +363,17 @@ export const saveVideos = createAsyncThunk(
          const error = new Error(`Not Authorized`);
          error.status = 401;
          throw error;
+      }
+      
+       const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
+       if (isValidKey) {
+         console.log('The API key is valid!');
+       } else {
+         alert('Go to homepage and create an API KEY to use this');
+         console.log('Invalid API key!');
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+         throw error;
        }
       await axios.post('/clientVideos', { video_files, owner: myClient.token });
 
@@ -389,6 +421,18 @@ export const saveImages = createAsyncThunk(
         error.status = 401;
         throw error;
       }
+
+       const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
+       if (isValidKey) {
+         console.log('The API key is valid!');
+       } else {
+         alert('Go to homepage and create an API KEY to use this');
+         console.log('Invalid API key!');
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+         throw error;
+       }
+
       const response = await fetch(
         `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`,
         {
