@@ -52,7 +52,7 @@ export const createKey = createAsyncThunk(
         const error = new Error(`Not Authorized`);
         error.status = 401;
       }
-      console.log(myClient);
+      //console.log(myClient);
       const key = await theAuthAPI.apiKeys.createKey({
         projectId: projectID,
         customMetaData: { metadata_val: customMETAData },
@@ -60,7 +60,7 @@ export const createKey = createAsyncThunk(
         name
       });
       alert("KEY CREATED");
-      console.log('Key created > ', key);
+      //console.log('Key created > ', key);
        await axios.put(`/clientData/${myClient.id}`, {
          ...myClient,
          apiKey: key.key,
@@ -68,7 +68,7 @@ export const createKey = createAsyncThunk(
          apiAccountId: key.customAccountId,
          apiCreationDate: key.createdAt,
        });
-      console.log(key)
+      //console.log(key)
       return key;
     } catch (e) {
       console.log("Couldn't make the key ", e);
@@ -111,7 +111,7 @@ export const fetchPopularVideos = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await client.videos.popular({ per_page: 12 });
-      console.log(response.videos);
+     // console.log(response.videos);
       return response.videos;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -130,7 +130,7 @@ export const fetchMorePopularVideos = createAsyncThunk(
     const moreVids = popularVidNmu + 12;
     try {
       const response = await client.videos.popular({ per_page: moreVids });
-      console.log(response.videos);
+      //console.log(response.videos);
       return response.videos;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -165,16 +165,16 @@ export const searchVideos = createAsyncThunk(
       }
        const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
       if (isValidKey) {
-        console.log('The API key is valid!');
+        //console.log('The API key is valid!');
       } else {
         alert('Go to homepage and create an API KEY to use this');
-        console.log('Invalid API key!');
+        //console.log('Invalid API key!');
          const error = new Error(`Not Authorized`);
          error.status = 401;
          throw error;
       }
       const response = await client.videos.search({ query, per_page: 12 });
-      console.log(response.videos);
+      //console.log(response.videos);
       return response.videos;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -211,7 +211,7 @@ export const searchMoreVideos = createAsyncThunk(
         query,
         per_page: moreVids,
       });
-      console.log(response.videos);
+      //console.log(response.videos);
       return response.videos;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -222,7 +222,7 @@ export const searchMoreVideos = createAsyncThunk(
 export const fetchVidWord = createAsyncThunk(
   'videos/fetchVidWord',
   async (query, thunkAPI) => {
-    console.log(query);
+    //console.log(query);
     return query;
   }
 );
@@ -232,7 +232,7 @@ export const fetchPopularImages = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await client.photos.curated({ per_page: 12 });
-      console.log(response);
+      //console.log(response);
       return response;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -250,7 +250,7 @@ export const fetchMorePopularImages = createAsyncThunk(
     const moreImgs = popularImgNmu + 12;
     try {
       const response = await client.photos.curated({ per_page: moreImgs });
-      console.log(response);
+      //console.log(response);
       return response;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -285,17 +285,17 @@ export const searchImages = createAsyncThunk(
 
        const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
        if (isValidKey) {
-         console.log('The API key is valid!');
+         //console.log('The API key is valid!');
        } else {
          alert('Go to homepage and create an API KEY to use this');
-         console.log('Invalid API key!');
+         //console.log('Invalid API key!');
          const error = new Error(`Not Authorized`);
          error.status = 401;
          throw error;
        }
       
       const response = await client.photos.search({ query, per_page: 12 });
-      console.log(response);
+      //console.log(response);
       return response;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -330,7 +330,7 @@ export const searchMoreImages = createAsyncThunk(
         query,
         per_page: moreImgs,
       });
-      console.log(response);
+      //console.log(response);
       return response;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -367,10 +367,10 @@ export const saveVideos = createAsyncThunk(
       
        const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
        if (isValidKey) {
-         console.log('The API key is valid!');
+        // console.log('The API key is valid!');
        } else {
          alert('Go to homepage and create an API KEY to use this');
-         console.log('Invalid API key!');
+         //console.log('Invalid API key!');
          const error = new Error(`Not Authorized`);
          error.status = 401;
          throw error;
@@ -424,10 +424,10 @@ export const saveImages = createAsyncThunk(
 
        const isValidKey = await theAuthAPI.apiKeys.isValidKey(myClient.apiKey);
        if (isValidKey) {
-         console.log('The API key is valid!');
+         //console.log('The API key is valid!');
        } else {
          alert('Go to homepage and create an API KEY to use this');
-         console.log('Invalid API key!');
+         //console.log('Invalid API key!');
          const error = new Error(`Not Authorized`);
          error.status = 401;
          throw error;
@@ -487,7 +487,7 @@ export const fetchSavedImages = createAsyncThunk(
 
       const data = await response.json(); 
       const myData = data.filter(data => data.owner === myClient.token);
-      console.log(myData);
+      //console.log(myData);
       return myData;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message); 
@@ -499,7 +499,7 @@ export const fetchSavedImages = createAsyncThunk(
 export const deleteImages = createAsyncThunk(
   'images/deleteImage', 
   async (myId, thunkAPI) => {
-    console.log(myId);
+    //console.log(myId);
     try {
       const response = await fetch(
         `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages/${myId}`,
@@ -541,7 +541,7 @@ export const fetchSavedVideos = createAsyncThunk(
       const response = await axios.get('/clientVideos');
       //console.log(response.data);
       const myData = response.data.filter(data => data.owner === myClient.token);
-      console.log(myData)
+      //console.log(myData)
       return myData;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);

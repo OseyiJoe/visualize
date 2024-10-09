@@ -32,7 +32,7 @@ export const logUserIn = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const response = await axios.get('/clientData');
-      console.log(response.data);
+      //console.log(response.data);
       const clients = response.data
       const myClient = clients.find(client => client.email === email);
       if (!myClient) {

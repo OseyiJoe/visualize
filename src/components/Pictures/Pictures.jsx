@@ -113,7 +113,6 @@ export const Pictures = () => {
       </form>
       <div className={css.galleryFrame}>
         <Loader />
-        {console.log(searchedImages.photos)}
         {searchedImages.length !== 0 && searchedImgWord !== null ? (
           <ul className={`${css.movieGallery} gallery`}>
             {searchedImages.map(searchedImage => (
