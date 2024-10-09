@@ -1,12 +1,24 @@
 import css from './Home.module.css';
 import { Loader } from '../InitLoader/Loader';
 import play from './play.png';
-import { selectPopularVideos, selectMyKey } from '../../redux/Application/selectors';
+import {
+  selectPopularVideos,
+  selectMyKey,
+  selectOpenModal,
+  selectOpenKeyModal,
+  selectMyKeyName,
+  selectMyKeyId,
+} from '../../redux/Application/selectors';
 import { FullLoader } from '../Loader/Loader';
 import {
   saveVideos,
   fetchMorePopularVideos,
   createKey,
+  retrieveKey,
+  openModal,
+  closeModal,
+  openKeyModal,
+  closeKeyModal,
 } from '../../redux/Application/operations';
 import { selectUser } from '../../redux/Auth/selectors';
 import { Fancybox } from '@fancyapps/ui';
@@ -14,12 +26,17 @@ import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import svg from '../SharedLayout/icons.svg';
 
 export const Home = () => {
   const dispatch = useDispatch();
   const userName = useSelector(selectUser);
+  const isOpenModal = useSelector(selectOpenModal);
+  const isOpenKeyModal = useSelector(selectOpenKeyModal);
   const popularVideos = useSelector(selectPopularVideos);
-  const myKey = useSelector(selectMyKey)
+  const myKey = useSelector(selectMyKey);
+  const myKeyName = useSelector(selectMyKeyName);
+  const myKeyId = useSelector(selectMyKeyId);
   
     const handlePress = (videoFiles, evt) => {
       evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
@@ -54,6 +71,24 @@ export const Home = () => {
  );
   }
 
+  const handleModalOpen = () => {
+    dispatch(openModal())
+    console.log(isOpenModal);
+  }
+
+  const handleModalClose = () => {
+    dispatch(closeModal());
+    console.log(isOpenModal);
+  };
+
+  const handleKeyModalOpen = () => {
+    dispatch(openKeyModal());
+  };
+
+  const handleKeyModalClose = () => {
+    dispatch(closeKeyModal());
+  };
+
  
     useEffect(() => {
       Fancybox.bind("[data-fancybox='gallery']", {
@@ -66,16 +101,17 @@ export const Home = () => {
       };
     }, [popularVideos]);
   
-    /*useEffect(() => {
-      dispatch(fetchPopularVideos());
-    }, [dispatch]); */
+  useEffect(() => {
+      dispatch(retrieveKey());
+      //dispatch(fetchPopularVideos());
+    }, [dispatch]); 
 
   //const ifLoggedIn = useSelector(selectIfLoggedIn);
   //const ifRegisteredIn = useSelector(selectIfRegistered);
 
   return (
     <div>
-      <FullLoader/>
+      <FullLoader />
       <span className={css.movieGalleryLabel}>
         <img
           src={play}
@@ -89,11 +125,18 @@ export const Home = () => {
           {myKey === null && (
             <span className={css.genWrapper}>
               <span className={css.genLabel}>For more access</span>
-              <button className={css.genButton}>CREATE KEY</button>
+              <button className={css.genButton} onClick={handleModalOpen}>
+                CREATE KEY
+              </button>
             </span>
           )}
-          {myKey === null && (
+          {isOpenModal === true && (
             <div className={css.overlay}>
+              <button className={css.closeModal} onClick={handleModalClose}>
+                <svg width="20px" height="20px" className={css.modalIcon}>
+                  <use href={`${svg}#icon-cross`}></use>
+                </svg>
+              </button>
               <div className={css.login}>
                 <div>
                   <div className={css.formContainer}>
@@ -140,6 +183,42 @@ export const Home = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+          {myKey !== null && (
+            <div>
+              <span className={css.genWrapper}>
+                <span className={css.genLabel}>To View KEY details</span>
+                <button className={css.genButton} onClick={handleKeyModalOpen}>
+                  CLICK HERE
+                </button>
+              </span>
+            </div>
+          )}
+          {isOpenKeyModal === true && (
+            <div className={css.overlay}>
+              <button className={css.closeModal} onClick={handleKeyModalClose}>
+                <svg width="20px" height="20px" className={css.modalIcon}>
+                  <use href={`${svg}#icon-cross`}></use>
+                </svg>
+              </button>
+              <table className={css.transactionHistory}>
+                <thead>
+                  <tr>
+                    <th>KEY NAME</th>
+                    <th>KEY</th>
+                    <th>KEY ID</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>{myKeyName}</td>
+                    <td>{myKey}</td>
+                    <td>{myKeyId}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           )}
         </div>

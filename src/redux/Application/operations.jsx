@@ -12,10 +12,47 @@ const theAuthAPI = new TheAuthAPI(accessKey);
 const apiKey = "LvPoIKzvfOmPhNGqaulfHz5WLbcnMNVZlzJmQTDZatGXgU953AqoGVZx";
 const client = createClient(apiKey);
 
+export const openModal = createAsyncThunk(
+  'modal/open',
+  async (_, thunkAPI) => {
+  return true;
+  }
+);
+
+export const closeModal = createAsyncThunk('modal/close', async (_, thunkAPI) => {
+   return false;
+});
+
+export const openKeyModal = createAsyncThunk('keyModal/open', async (_, thunkAPI) => {
+  return true;
+});
+
+export const closeKeyModal = createAsyncThunk(
+  'keyModal/close',
+  async (_, thunkAPI) => {
+    return false;
+  }
+);
+
+
 export const createKey = createAsyncThunk(
   'key/create',
   async ({ name, customAccountId, customMETAData }, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
     try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      console.log(myClient);
       const key = await theAuthAPI.apiKeys.createKey({
         projectId: projectID,
         customMetaData: { metadata_val: customMETAData },
@@ -24,20 +61,6 @@ export const createKey = createAsyncThunk(
       });
       alert("KEY CREATED");
       console.log('Key created > ', key);
-      const state = thunkAPI.getState();
-      const persistedToken = state.auth.token;
-      if (persistedToken === null) {
-        return thunkAPI.rejectWithValue('Unable to fetch user');
-      }
-       const res = await axios.get('/clientData');
-      const clients = res.data;
-      
-       const myClient = clients.find(client => client.token === persistedToken);
-       if (!myClient) {
-         const error = new Error(`Not Authorized`);
-         error.status = 401;
-      }
-      console.log(myClient);
        await axios.put(`/clientData/${myClient.id}`, {
          ...myClient,
          apiKey: key.key,
@@ -56,11 +79,25 @@ export const createKey = createAsyncThunk(
 export const retrieveKey = createAsyncThunk(
   'key/retrieveKey',
   async (_, thunkAPI) => {
-    
+
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+
     try {
-        const response = await axios.get('/Polls/1');
-        //console.log (response.data);
-      return response.data;
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      //console.log(myClient);
+      
+      return myClient;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -114,11 +151,17 @@ export const searchVideos = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
       const myClient = clients.find(client => client.token === persistedToken);
-      if (myClient.length === 0) {
+      if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
+        throw error;
       }
-      //const apiKey = myClient.apiKey, then validate
+      if (myClient.apiKey === null) {
+        alert('Go to homepage and create an API KEY to use this');
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+        throw error;
+      }
       const response = await client.videos.search({ query, per_page: 12 });
       console.log(response.videos);
       return response.videos;
@@ -147,9 +190,10 @@ export const searchMoreVideos = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
       const myClient = clients.find(client => client.token === persistedToken);
-      if (myClient.length === 0) {
+      if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
+        throw error;
       }
       //const apiKey = myClient.apiKey, then validate
       const response = await client.videos.search({
@@ -216,11 +260,18 @@ export const searchImages = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
       const myClient = clients.find(client => client.token === persistedToken);
-      if (myClient.length === 0) {
+      if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
+        throw error;
       }
-      //const apiKey = myClient.apiKey, then validate
+      if (myClient.apiKey === null) {
+        alert('Go to homepage and create an API KEY to use this');
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+        throw error;
+      }
+      
       const response = await client.photos.search({ query, per_page: 12 });
       console.log(response);
       return response;
@@ -248,9 +299,10 @@ export const searchMoreImages = createAsyncThunk(
        const res = await axios.get('/clientData');
        const clients = res.data;
        const myClient = clients.find(client => client.token === persistedToken);
-       if (myClient.length === 0) {
+       if (!myClient) {
          const error = new Error(`Not Authorized`);
          error.status = 401;
+         throw error;
        }
       const response = await client.photos.search({
         query,
@@ -278,10 +330,18 @@ export const saveVideos = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
       const myClient = clients.find(client => client.token === persistedToken);
-      if (myClient.length === 0) {
+      if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
+        throw error;
       }
+
+       if (myClient.apiKey === null) {
+         alert('Go to homepage and create an API KEY to use this');
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+         throw error;
+       }
       await axios.post('/clientVideos', { video_files, owner: myClient.token });
 
     } catch (e) {
@@ -316,9 +376,17 @@ export const saveImages = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
       const myClient = clients.find(client => client.token === persistedToken);
-      if (myClient.length === 0) {
+      if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
+        throw error;
+      }
+
+      if (myClient.apiKey === null) {
+        alert('Go to homepage and create an API KEY to use this');
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+        throw error;
       }
       const response = await fetch(
         `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`,
@@ -358,7 +426,7 @@ export const fetchSavedImages = createAsyncThunk(
        const res = await axios.get('/clientData');
        const clients = res.data;
        const myClient = clients.find(client => client.token === persistedToken);
-       if (myClient.length === 0) {
+       if (!myClient) {
          const error = new Error(`Not Authorized`);
          error.status = 401;
        }
@@ -421,7 +489,7 @@ export const fetchSavedVideos = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
       const myClient = clients.find(client => client.token === persistedToken);
-      if (myClient.length === 0) {
+      if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
       }

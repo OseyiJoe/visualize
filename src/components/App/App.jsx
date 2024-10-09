@@ -13,7 +13,8 @@ import {
   fetchPopularVideos,
   fetchPopularImages,
   fetchSavedVideos,
-  fetchSavedImages
+  fetchSavedImages,
+  retrieveKey,
 } from '../../redux/Application/operations';
 
 const Home = lazy(() => import('../Home/Home'));
@@ -37,6 +38,7 @@ export const App = () => {
     dispatch(fetchPopularImages());
     dispatch(fetchSavedVideos());
     dispatch(fetchSavedImages());
+    dispatch(retrieveKey());
   }, [dispatch]);
 
   return ifRefreshing ? (

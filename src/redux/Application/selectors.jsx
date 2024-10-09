@@ -22,7 +22,15 @@ export const selectSearchedImgWord = state => state.app.searchImgWord;
 
 export const selectMyKey = state => state.app.myKey;
 
+export const selectMyKeyName = state => state.app.keyName;
+
+export const selectMyKeyId = state => state.app.keyId;
+
 export const selectLoading = state => state.app.ifLoading;
 
 export const selectFullLoading = state => state.app.ifFullLoading;
+
+export const selectOpenModal = state => state.app.openMyModal;
+
+export const selectOpenKeyModal = state => state.app.openMyKeyModal;
 

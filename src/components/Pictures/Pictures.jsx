@@ -159,7 +159,8 @@ export const Pictures = () => {
           ifLoading === false && (
             <div className={css.message}>
               <p className={css.messageItem}>
-                No Videos, try another search term
+                No Videos, try another search term or create API KEY if you
+                haven't.
               </p>
             </div>
           )

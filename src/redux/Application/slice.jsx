@@ -17,6 +17,11 @@ import {
   deleteVideos,
   searchMoreVideos,
   createKey,
+  retrieveKey,
+  openModal,
+  closeModal,
+  openKeyModal,
+  closeKeyModal,
 } from './operations';
 
 const handlePending = state => {
@@ -46,6 +51,11 @@ const appSlice = createSlice({
     searchImgNmu: 0,
     popularImgNmu: 0,
     myKey: null,
+    keyName: null,
+    keyId: null,
+    keyDate: null,
+    openMyModal: false,
+    openMyKeyModal: false,
     polls: {
       items: {},
       ifLoading: false,
@@ -237,10 +247,43 @@ const appSlice = createSlice({
         state.ifFullLoading = false;
         state.error = null;
         state.myKey = action.payload.key;
+        
       })
       .addCase(createKey.rejected, (state, action) => {
         state.ifFullLoading = false;
         state.error = action.payload;
+      })
+      .addCase(retrieveKey.pending, state => {
+        state.ifLoading = true;
+        state.error = null;
+      })
+      .addCase(retrieveKey.fulfilled, (state, action) => {
+        state.ifLoading = false;
+        state.error = null;
+        state.myKey = action.payload.apiKey;
+        state.keyName = action.payload.apiKeyName;
+        state.keyId = action.payload.apiAccountId;
+        state.keyDate = action.payload.apiCreationDate;
+      })
+      .addCase(retrieveKey.rejected, (state, action) => {
+        state.ifLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(openModal.fulfilled, (state, action) => {
+        state.openMyModal = action.payload;
+      })
+
+      .addCase(closeModal.fulfilled, (state, action) => {
+        state.openMyModal = action.payload;
+      })
+    
+     .addCase(openKeyModal.fulfilled, (state, action) => {
+        state.openMyKeyModal = action.payload;
+      })
+
+      .addCase(closeKeyModal.fulfilled, (state, action) => {
+        state.openMyKeyModal = action.payload;
       });
   },
 });
