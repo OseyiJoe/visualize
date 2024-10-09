@@ -247,6 +247,8 @@ const appSlice = createSlice({
         state.ifFullLoading = false;
         state.error = null;
         state.myKey = action.payload.key;
+        state.keyName = action.payload.name;
+        state.keyId = action.payload.customAccountId;
         
       })
       .addCase(createKey.rejected, (state, action) => {

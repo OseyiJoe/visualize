@@ -366,21 +366,23 @@ font-weight: 700;
 
 .transactionHistory{
     font-size: 16px;
+    font-weight: 700;
     margin-left: 20px;
     border-collapse: collapse;
   text-align: center;
   padding: 10px;
-  background-color: rgb(238, 236, 236);
+  background-color: #87CEEB;
   font-family: 'Comic Sans MS';
+  color: blue;
   
 }
 
  th,
  td {
   padding: 5px;
-  border: 1px solid rgba(15, 15, 15, 0.3);
+  border: 3px solid #fff;
 }
 
 td {
-     background-color: rgb(209, 209, 209);
+     background-color: #48bdeb;
 }

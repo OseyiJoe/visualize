@@ -68,6 +68,7 @@ export const createKey = createAsyncThunk(
          apiAccountId: key.customAccountId,
          apiCreationDate: key.createdAt,
        });
+      console.log(key)
       return key;
     } catch (e) {
       console.log("Couldn't make the key ", e);
