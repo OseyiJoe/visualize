@@ -1,11 +1,71 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { createClient } from 'pexels';
+import TheAuthAPI from 'theauthapi';
+
+const accessKey = 'live_access_JrYRqAaVpzu32N2jVYfkSrT0fuef00cv6sOr9nxsXxzbJvIbgSstsVZ6WrFTtHcA';
+
+const projectID = "420a7457-d5e2-463d-a743-ce69b03143f2"
+
+const theAuthAPI = new TheAuthAPI(accessKey);
+
 const apiKey = "LvPoIKzvfOmPhNGqaulfHz5WLbcnMNVZlzJmQTDZatGXgU953AqoGVZx";
-
-
-
 const client = createClient(apiKey);
+
+export const createKey = createAsyncThunk(
+  'key/create',
+  async ({ name, customAccountId, customMETAData }, thunkAPI) => {
+    try {
+      const key = await theAuthAPI.apiKeys.createKey({
+        projectId: projectID,
+        customMetaData: { metadata_val: customMETAData },
+        customAccountId,
+        name
+      });
+      alert("KEY CREATED");
+      console.log('Key created > ', key);
+      const state = thunkAPI.getState();
+      const persistedToken = state.auth.token;
+      if (persistedToken === null) {
+        return thunkAPI.rejectWithValue('Unable to fetch user');
+      }
+       const res = await axios.get('/clientData');
+      const clients = res.data;
+      
+       const myClient = clients.find(client => client.token === persistedToken);
+       if (!myClient) {
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+      }
+      console.log(myClient);
+       await axios.put(`/clientData/${myClient.id}`, {
+         ...myClient,
+         apiKey: key.key,
+         apiKeyName: key.name,
+         apiAccountId: key.customAccountId,
+         apiCreationDate: key.createdAt,
+       });
+      return key;
+    } catch (e) {
+      console.log("Couldn't make the key ", e);
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const retrieveKey = createAsyncThunk(
+  'key/retrieveKey',
+  async (_, thunkAPI) => {
+    
+    try {
+        const response = await axios.get('/Polls/1');
+        //console.log (response.data);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
 
 
 export const fetchPopularVideos = createAsyncThunk(

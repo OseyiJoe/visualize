@@ -20,5 +20,9 @@ export const selectSearchedVidWord = state => state.app.searchVidWord;
 
 export const selectSearchedImgWord = state => state.app.searchImgWord;
 
+export const selectMyKey = state => state.app.myKey;
+
 export const selectLoading = state => state.app.ifLoading;
+
+export const selectFullLoading = state => state.app.ifFullLoading;
 

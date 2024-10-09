@@ -54,7 +54,7 @@ export const VideoCollection = () => {
         />
 
         <span>
-          <span className={css.movieGalleryLabel}>Videos</span>
+          <span className={css.movieGalleryLabel}> Your Videos</span>
         </span>
 
         <img

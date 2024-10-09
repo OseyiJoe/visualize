@@ -1,10 +1,12 @@
 import css from './Home.module.css';
 import { Loader } from '../InitLoader/Loader';
 import play from './play.png';
-import { selectPopularVideos } from '../../redux/Application/selectors';
+import { selectPopularVideos, selectMyKey } from '../../redux/Application/selectors';
+import { FullLoader } from '../Loader/Loader';
 import {
   saveVideos,
   fetchMorePopularVideos,
+  createKey,
 } from '../../redux/Application/operations';
 import { selectUser } from '../../redux/Auth/selectors';
 import { Fancybox } from '@fancyapps/ui';
@@ -17,6 +19,7 @@ export const Home = () => {
   const dispatch = useDispatch();
   const userName = useSelector(selectUser);
   const popularVideos = useSelector(selectPopularVideos);
+  const myKey = useSelector(selectMyKey)
   
     const handlePress = (videoFiles, evt) => {
       evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
@@ -37,6 +40,18 @@ export const Home = () => {
       evt.target.style.boxShadow = 'none';
     }, 2000);
     dispatch(fetchMorePopularVideos());
+  }
+
+  const handleSubmit = (e) => {
+ e.preventDefault();
+ const form = e.currentTarget;
+ dispatch(
+   createKey({
+     name: form.elements.name.value,
+     customMETAData: form.elements.customMetaData.value,
+     customAccountId: form.elements.customAccountId.value,
+   })
+ );
   }
 
  
@@ -60,6 +75,7 @@ export const Home = () => {
 
   return (
     <div>
+      <FullLoader/>
       <span className={css.movieGalleryLabel}>
         <img
           src={play}
@@ -70,6 +86,62 @@ export const Home = () => {
         <div className={css.headerWrapper}>
           <span className={css.headerLabel}>Hello, {userName.name}</span>
           <span className={css.movieGalleryTitle}>Trending Videos</span>
+          {myKey === null && (
+            <span className={css.genWrapper}>
+              <span className={css.genLabel}>For more access</span>
+              <button className={css.genButton}>CREATE KEY</button>
+            </span>
+          )}
+          {myKey === null && (
+            <div className={css.overlay}>
+              <div className={css.login}>
+                <div>
+                  <div className={css.formContainer}>
+                    <form
+                      className={css.form}
+                      onSubmit={handleSubmit}
+                      autoComplete="off"
+                    >
+                      <label className={css.label}>
+                        KEY NAME
+                        <input
+                          type="text"
+                          name="name"
+                          className={css.input}
+                          required
+                        />
+                      </label>
+                      <label className={css.label}>
+                        CUSTOM ACCOUNT ID
+                        <input
+                          type="text"
+                          name="customAccountId"
+                          className={css.input}
+                          required
+                        />
+                      </label>
+                      <label className={css.label}>
+                        CUSTOM META DATA
+                        <input
+                          type="text"
+                          name="customMetaData"
+                          className={css.input}
+                          required
+                        />
+                      </label>
+                      <button
+                        className={css.inputButton}
+                        name="button"
+                        type="submit"
+                      >
+                        CREATE A KEY
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <img
           src={play}

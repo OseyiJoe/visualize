@@ -16,6 +16,7 @@ import {
   deleteImages,
   deleteVideos,
   searchMoreVideos,
+  createKey,
 } from './operations';
 
 const handlePending = state => {
@@ -38,11 +39,13 @@ const appSlice = createSlice({
     searchedImages: [],
     searchImgWord: null,
     ifLoading: false,
+    ifFullLoading: false,
     error: null,
     searchVidNmu: 0,
     popularVidNmu: 0,
     searchImgNmu: 0,
     popularImgNmu: 0,
+    myKey: null,
     polls: {
       items: {},
       ifLoading: false,
@@ -224,6 +227,19 @@ const appSlice = createSlice({
       })
       .addCase(deleteVideos.rejected, (state, action) => {
         state.ifLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(createKey.pending, state => {
+        state.ifFullLoading = true;
+        state.error = null;
+      })
+      .addCase(createKey.fulfilled, (state, action) => {
+        state.ifFullLoading = false;
+        state.error = null;
+        state.myKey = action.payload.key;
+      })
+      .addCase(createKey.rejected, (state, action) => {
+        state.ifFullLoading = false;
         state.error = action.payload;
       });
   },

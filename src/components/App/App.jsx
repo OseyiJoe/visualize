@@ -12,6 +12,8 @@ import { selectIfRefreshing } from '../../redux/Auth/selectors';
 import {
   fetchPopularVideos,
   fetchPopularImages,
+  fetchSavedVideos,
+  fetchSavedImages
 } from '../../redux/Application/operations';
 
 const Home = lazy(() => import('../Home/Home'));
@@ -33,6 +35,8 @@ export const App = () => {
     dispatch(refreshUser());
     dispatch(fetchPopularVideos());
     dispatch(fetchPopularImages());
+    dispatch(fetchSavedVideos());
+    dispatch(fetchSavedImages());
   }, [dispatch]);
 
   return ifRefreshing ? (

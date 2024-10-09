@@ -185,6 +185,35 @@ font-weight: 700;
   gap:10px
 }
 
+.genWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.genLabel{
+    font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  font-family: 'Comic Sans MS';
+     text-shadow: 2px 2px 2px #000000;
+}
+
+.genButton{
+  background-color: blue;
+  border-radius: 30px;
+  padding: 15px;
+  margin: 5px;
+  border: none;
+  color: #fff;
+  font-family: 'Comic Sans MS';
+  font-weight: 700;
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 10px 12px -6px rgba(0, 0, 0, 0.4);
+}
+
 
 
 .movieItem:hover {
@@ -240,4 +269,81 @@ font-weight: 700;
   font-family: 'Comic Sans MS';
   font-weight: 700;
   color:#ffff;
+}
+
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.formContainer{
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #4682B4;
+  background-color: #48bdeb;
+  border: 5px solid #fff;
+}
+
+.form {
+  width: 320px;
+  font-family: 'Comic Sans MS';
+  color: blue;
+  font-weight: 700;
+  text-align: center;
+  padding: 5px;
+}
+
+.input{
+    background-color: #87CEEB;
+    background-color: #fff;
+    border-radius: 4px;
+    font-family: 'Comic Sans MS';
+    font-weight: 700;
+    padding: 3px;
+    color: blue;
+    margin-top: 3px;
+    border: 1px solid #fff;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  text-align: start;
+  color:blue;
+}
+
+.inputButton{
+    background-color: blue;
+    border: none;
+    border-radius: 4px;
+    color: #87CEEB;
+    cursor: pointer;
+    font-family: Comic Sans Ms;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 2px;
+    padding: 7px;
+    text-align: center;
+}
+
+.inputButton:hover{
+  background-color: #87CEEB;
+  color: blue;
 }

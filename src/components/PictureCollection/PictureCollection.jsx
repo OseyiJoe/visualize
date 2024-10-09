@@ -57,7 +57,7 @@ export const PictureCollection = () => {
         />
 
         <span>
-          <span className={css.movieGalleryLabel}>Pictures</span>
+          <span className={css.movieGalleryLabel}>Your Pictures</span>
         </span>
 
         <img
