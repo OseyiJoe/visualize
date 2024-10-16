@@ -9,3 +9,5 @@ export const selectUser = state => state.auth.user;
 export const selectIfRefreshing = state => state.auth.ifRefreshing;
 
 export const selectAll = state => state.auth;
+
+export const selectIfLoading = state => state.auth.ifLoading;

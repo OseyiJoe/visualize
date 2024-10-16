@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { logUserOut } from '../../redux/Auth/operations';
 import { useSelector } from 'react-redux';
 import { selectIfLoggedIn } from '../../redux/Auth/selectors';
+import { Loader } from '../AuthLoader/Loader';
 //import { useEffect } from 'react';
 //import { selectVotes } from '../../redux/Application/selectors';
 //import { useSelector } from 'react-redux';
@@ -29,6 +30,7 @@ export const SharedLayout = () => {
 
   return (
     <Container>
+      <Loader />
       <Header>
         <Symbol to="/">
           <Logo>
