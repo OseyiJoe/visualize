@@ -213,7 +213,6 @@ const appSlice = createSlice({
       .addCase(deleteImages.fulfilled, (state, action) => {
         state.ifLoading = false;
         state.error = null;
-        console.log(state.savedImages);
         const myIndex = state.savedImages.findIndex(
           image => image.id === action.payload
         );
