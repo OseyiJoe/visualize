@@ -187,7 +187,6 @@ export const Home = () => {
           )}
           {myKey !== null && (
             <div>
-              {console.log(myKey)}
               <span className={css.genWrapper}>
                 <span className={css.genLabel}>To View KEY details</span>
                 <button className={css.genButton} onClick={handleKeyModalOpen}>

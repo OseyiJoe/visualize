@@ -624,7 +624,6 @@ export const fetchSavedVideos = createAsyncThunk(
 export const fetchImgWord = createAsyncThunk(
   'videos/fetchImgWord',
   async (query, thunkAPI) => {
-      console.log(query);
       return query;
   }
 );
