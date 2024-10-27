@@ -8,6 +8,7 @@ import {
   selectOpenKeyModal,
   selectMyKeyName,
   selectMyKeyId,
+  selectMyKeyMeta
 } from '../../redux/Application/selectors';
 import { FullLoader } from '../Loader/Loader';
 import {
@@ -15,6 +16,8 @@ import {
   fetchMorePopularVideos,
   createKey,
   retrieveKey,
+  updateKey,
+  deleteKey,
   openModal,
   closeModal,
   openKeyModal,
@@ -26,6 +29,7 @@ import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import svg from '../SharedLayout/icons.svg';
 
 export const Home = () => {
@@ -37,6 +41,8 @@ export const Home = () => {
   const myKey = useSelector(selectMyKey);
   const myKeyName = useSelector(selectMyKeyName);
   const myKeyId = useSelector(selectMyKeyId);
+  const myKeyMeta = useSelector(selectMyKeyMeta);
+   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   
     const handlePress = (videoFiles, evt) => {
       evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
@@ -89,6 +95,29 @@ export const Home = () => {
     dispatch(closeKeyModal());
   };
 
+  const handleDetailsModalOpen = () => {
+    setIsDetailsOpen(true);
+  };
+
+  const handleDetailsModalClose = () => {
+   setIsDetailsOpen(false);
+  };
+  
+  const handleDetailsSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+     dispatch(
+       updateKey({
+         name: form.elements.name.value,
+         customMETAData: form.elements.customMetaData.value,
+         customAccountId: form.elements.customAccountId.value,
+       })
+     );
+  }
+
+  const handleDelete = () => {
+    dispatch(deleteKey())
+  }
  
     useEffect(() => {
       Fancybox.bind("[data-fancybox='gallery']", {
@@ -104,7 +133,16 @@ export const Home = () => {
   useEffect(() => {
       dispatch(retrieveKey());
       //dispatch(fetchPopularVideos());
-    }, [dispatch]); 
+  }, [dispatch]); 
+  
+  useEffect(() => {
+    if (myKey !== null) {
+      dispatch(closeModal());
+    }
+    if (myKey === null) {
+      setIsDetailsOpen(false);
+    }
+  }, [myKey, dispatch]);
 
   //const ifLoggedIn = useSelector(selectIfLoggedIn);
   //const ifRegisteredIn = useSelector(selectIfRegistered);
@@ -186,10 +224,20 @@ export const Home = () => {
             </div>
           )}
           {myKey !== null && (
-            <div>
+            <div className={css.genCover}>
               <span className={css.genWrapper}>
-                <span className={css.genLabel}>To View KEY details</span>
+                <span className={css.genLabel}>To View KEY DETAILS</span>
                 <button className={css.genButton} onClick={handleKeyModalOpen}>
+                  CLICK HERE
+                </button>
+              </span>
+
+              <span className={css.genWrapper}>
+                <span className={css.genLabel}>To View KEY OPTIONS</span>
+                <button
+                  className={css.genButton}
+                  onClick={handleDetailsModalOpen}
+                >
                   CLICK HERE
                 </button>
               </span>
@@ -208,6 +256,7 @@ export const Home = () => {
                     <th>KEY NAME</th>
                     <th>KEY</th>
                     <th>KEY ID</th>
+                    <th>KEY META DATA</th>
                   </tr>
                 </thead>
 
@@ -216,9 +265,76 @@ export const Home = () => {
                     <td>{myKeyName}</td>
                     <td>{myKey}</td>
                     <td>{myKeyId}</td>
+                    <td>{myKeyMeta}</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {isDetailsOpen === true && (
+            <div className={css.overlay}>
+              <button
+                className={css.closeModal}
+                onClick={handleDetailsModalClose}
+              >
+                <svg width="20px" height="20px" className={css.modalIcon}>
+                  <use href={`${svg}#icon-cross`}></use>
+                </svg>
+              </button>
+              <div className={css.detailsModal}>
+                <button className={css.genButton} onClick={handleDelete}>
+                  DELETE KEY
+                </button>
+
+                <div className={css.detailsModalText}> OR </div>
+
+                <div className={css.formDetailsContainer}>
+                  <form
+                    className={css.form}
+                    onSubmit={handleDetailsSubmit}
+                    autoComplete="off"
+                  >
+                    <label className={css.label}>
+                      KEY NAME
+                      <input
+                        type="text"
+                        name="name"
+                        defaultValue={myKeyName}
+                        className={css.input}
+                        required
+                      />
+                    </label>
+                    <label className={css.label}>
+                      CUSTOM ACCOUNT ID (KEY ID)
+                      <input
+                        type="text"
+                        name="customAccountId"
+                        className={css.input}
+                        defaultValue={myKeyId}
+                        required
+                      />
+                    </label>
+                    <label className={css.label}>
+                      CUSTOM META DATA
+                      <input
+                        type="text"
+                        name="customMetaData"
+                        className={css.input}
+                        defaultValue={myKeyMeta}
+                        required
+                      />
+                    </label>
+                    <button
+                      className={css.inputButton}
+                      name="button"
+                      type="submit"
+                    >
+                      UPDATE KEY DETAILS
+                    </button>
+                  </form>
+                </div>
+              </div>
             </div>
           )}
         </div>

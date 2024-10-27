@@ -96,6 +96,7 @@ export const createKey = createAsyncThunk(
         customAccountId,
         name
       });
+      //console.log(key);
       alert("KEY CREATED");
       const payload = { apKey: key.key };
       //console.log(jwt);
@@ -113,8 +114,110 @@ export const createKey = createAsyncThunk(
          apiKeyName: key.name,
          apiAccountId: key.customAccountId,
          apiCreationDate: key.createdAt,
+         apiMetaData: key.customMetaData.metadata_val
        });
       //console.log(key)
+      return key;
+    } catch (e) {
+      console.log("Couldn't make the key ", e);
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const updateKey = createAsyncThunk(
+  'key/update',
+  async ({ name, customAccountId, customMETAData }, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+    try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      //console.log(myClient);
+      const secretKey = 'thisisaverysecurekey1234567890';
+
+      const relKey = await verifyJWT(myClient.apiKey, secretKey);
+      //console.log(relKey);
+
+      const key = await theAuthAPI.apiKeys.updateKey(relKey.apKey, {
+        name,
+        customMetaData: { metadata_val: customMETAData },
+        customAccountId,
+      });
+      alert('KEY UPDATED');
+      const payload = { apKey: key.key };
+      //console.log(jwt);
+      
+
+      const myToken = await signJWT(payload, secretKey, {
+        algorithm: 'HS256',
+      });
+
+      console.log(myToken);
+      //console.log('Key created > ', key);
+      await axios.put(`/clientData/${myClient.id}`, {
+        ...myClient,
+        apiKey: myToken,
+        apiKeyName: key.name,
+        apiAccountId: key.customAccountId,
+        apiCreationDate: key.createdAt,
+        apiMetaData: key.customMetaData.metadata_val,
+        //apiMetaData:key
+      });
+      //console.log(key)
+      return key;
+    } catch (e) {
+      console.log("Couldn't make the key ", e);
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+
+export const deleteKey = createAsyncThunk(
+  'key/delete',
+  async ( _, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+    try {
+      const res = await axios.get('/clientData');
+      const clients = res.data;
+
+      const myClient = clients.find(client => client.token === persistedToken);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      //console.log(myClient);
+      const secretKey = 'thisisaverysecurekey1234567890';
+
+      const relKey = await verifyJWT(myClient.apiKey, secretKey);
+      //console.log(relKey);
+
+      const key = await theAuthAPI.apiKeys.deleteKey(relKey.apKey);
+      alert('KEY DELETED');
+      
+      //console.log('Key created > ', key);
+      await axios.put(`/clientData/${myClient.id}`, {
+        ...myClient,
+        apiKey: null,
+        apiKeyName: null,
+        apiAccountId: null,
+        apiCreationDate: null,
+        apiMetaData:null
+      });
       return key;
     } catch (e) {
       console.log("Couldn't make the key ", e);
@@ -624,6 +727,7 @@ export const fetchSavedVideos = createAsyncThunk(
 export const fetchImgWord = createAsyncThunk(
   'videos/fetchImgWord',
   async (query, thunkAPI) => {
+      console.log(query);
       return query;
   }
 );

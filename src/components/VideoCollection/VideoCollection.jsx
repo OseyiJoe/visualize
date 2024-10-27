@@ -23,6 +23,7 @@ export const VideoCollection = () => {
        evt.target.style.boxShadow = 'none';
      }, 2000);
      const myId = evt.target.name;
+     console.log(myId);
      dispatch(deleteVideos(myId));
    };
 

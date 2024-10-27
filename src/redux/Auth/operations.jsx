@@ -59,6 +59,7 @@ export const addUser = createAsyncThunk(
         apiKeyName: null,
         apiAccountId: null,
         apiCreationDate: null,
+        apiMetaData:null
       });
       //console.log(response.data);
       return response.data;

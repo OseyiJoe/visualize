@@ -18,6 +18,8 @@ import {
   searchMoreVideos,
   createKey,
   retrieveKey,
+  updateKey,
+  deleteKey,
   openModal,
   closeModal,
   openKeyModal,
@@ -54,6 +56,7 @@ const appSlice = createSlice({
     keyName: null,
     keyId: null,
     keyDate: null,
+    keyMeta: null,
     openMyModal: false,
     openMyKeyModal: false,
     polls: {
@@ -213,6 +216,7 @@ const appSlice = createSlice({
       .addCase(deleteImages.fulfilled, (state, action) => {
         state.ifLoading = false;
         state.error = null;
+        console.log(state.savedImages);
         const myIndex = state.savedImages.findIndex(
           image => image.id === action.payload
         );
@@ -248,7 +252,7 @@ const appSlice = createSlice({
         state.myKey = action.payload.key;
         state.keyName = action.payload.name;
         state.keyId = action.payload.customAccountId;
-        
+        state.keyMeta = action.payload.customMetaData.metadata_val;
       })
       .addCase(createKey.rejected, (state, action) => {
         state.ifFullLoading = false;
@@ -265,9 +269,43 @@ const appSlice = createSlice({
         state.keyName = action.payload.apiKeyName;
         state.keyId = action.payload.apiAccountId;
         state.keyDate = action.payload.apiCreationDate;
+        state.keyMeta = action.payload.apiMetaData;
       })
       .addCase(retrieveKey.rejected, (state, action) => {
         state.ifLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(updateKey.pending, state => {
+        state.ifFullLoading = true;
+        state.error = null;
+      })
+      .addCase(updateKey.fulfilled, (state, action) => {
+        state.ifFullLoading = false;
+        state.error = null;
+        state.keyName = action.payload.name;
+        state.keyId = action.payload.customAccountId;
+        state.keyMeta = action.payload.customMetaData.metadata_val;
+      })
+      .addCase(updateKey.rejected, (state, action) => {
+        state.ifFullLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(deleteKey.pending, state => {
+        state.ifFullLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteKey.fulfilled, (state, action) => {
+        state.ifFullLoading = false;
+        state.error = null;
+        state.myKey = null;
+        state.keyName = null;
+        state.keyId = null;
+        state.keyMeta = null;
+      })
+      .addCase(deleteKey.rejected, (state, action) => {
+        state.ifFullLoading = false;
         state.error = action.payload;
       })
 
@@ -278,8 +316,8 @@ const appSlice = createSlice({
       .addCase(closeModal.fulfilled, (state, action) => {
         state.openMyModal = action.payload;
       })
-    
-     .addCase(openKeyModal.fulfilled, (state, action) => {
+
+      .addCase(openKeyModal.fulfilled, (state, action) => {
         state.openMyKeyModal = action.payload;
       })
 

@@ -26,6 +26,8 @@ export const selectMyKeyName = state => state.app.keyName;
 
 export const selectMyKeyId = state => state.app.keyId;
 
+export const selectMyKeyMeta = state => state.app.keyMeta;
+
 export const selectLoading = state => state.app.ifLoading;
 
 export const selectFullLoading = state => state.app.ifFullLoading;

@@ -36,6 +36,7 @@ export const Videos = () => {
     const form = evt.target;
     dispatch(searchVideos(form.elements.searcher.value))
     dispatch(fetchVidWord(form.elements.searcher.value));
+    console.log(form.elements.searcher.value);
   }
 
   const handleButtonPress = (evt) => {
@@ -54,7 +55,7 @@ export const Videos = () => {
      evt.target.style.boxShadow = 'none';
    }, 2000);
 
-  
+   console.log(videoFiles); // Log the array of video files
 
    dispatch(saveVideos({ video_files: videoFiles }));
  };
