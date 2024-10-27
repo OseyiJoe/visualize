@@ -78,12 +78,12 @@ export const Home = () => {
 
   const handleModalOpen = () => {
     dispatch(openModal())
-    console.log(isOpenModal);
+    
   }
 
   const handleModalClose = () => {
     dispatch(closeModal());
-    console.log(isOpenModal);
+    
   };
 
   const handleKeyModalOpen = () => {

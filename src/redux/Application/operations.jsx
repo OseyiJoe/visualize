@@ -106,7 +106,6 @@ export const createKey = createAsyncThunk(
         algorithm: 'HS256',
       });
 
-      console.log(myToken);
       //console.log('Key created > ', key);
        await axios.put(`/clientData/${myClient.id}`, {
          ...myClient,
@@ -153,7 +152,7 @@ export const updateKey = createAsyncThunk(
         customMetaData: { metadata_val: customMETAData },
         customAccountId,
       });
-      alert('KEY UPDATED');
+      alert('KEY DETAILS UPDATED');
       const payload = { apKey: key.key };
       //console.log(jwt);
       
@@ -162,7 +161,7 @@ export const updateKey = createAsyncThunk(
         algorithm: 'HS256',
       });
 
-      console.log(myToken);
+      
       //console.log('Key created > ', key);
       await axios.put(`/clientData/${myClient.id}`, {
         ...myClient,
