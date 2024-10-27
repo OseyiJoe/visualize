@@ -36,7 +36,6 @@ export const Videos = () => {
     const form = evt.target;
     dispatch(searchVideos(form.elements.searcher.value))
     dispatch(fetchVidWord(form.elements.searcher.value));
-    console.log(form.elements.searcher.value);
   }
 
   const handleButtonPress = (evt) => {

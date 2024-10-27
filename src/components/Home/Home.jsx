@@ -51,7 +51,6 @@ export const Home = () => {
         evt.target.style.boxShadow = 'none';
       }, 2000);
 
-      console.log(videoFiles); // Log the array of video files
 
       dispatch(saveVideos({ video_files: videoFiles }));
   };

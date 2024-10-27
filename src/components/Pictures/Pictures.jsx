@@ -35,7 +35,6 @@ export const Pictures = () => {
     const form = evt.target;
     dispatch(searchImages(form.elements.searcher.value));
     dispatch(fetchImgWord(form.elements.searcher.value));
-    console.log(form.elements.searcher.value);
   };
 
   const handleButtonPress = (evt) => {
@@ -55,7 +54,7 @@ export const Pictures = () => {
        evt.target.style.boxShadow = 'none';
      }, 2000);
 
-     console.log(imageFiles); // Log the array of video files
+     
 
      dispatch(saveImages({ image_files: imageFiles }));
    };

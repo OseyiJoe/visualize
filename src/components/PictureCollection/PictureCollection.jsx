@@ -24,7 +24,7 @@ export const PictureCollection = () => {
       evt.target.style.boxShadow = 'none';
     }, 2000);
     const myId = evt.target.name;
-    console.log(myId);
+    
     dispatch(deleteImages(myId));
   };
 
@@ -69,7 +69,6 @@ export const PictureCollection = () => {
       </span>
       <div className={css.galleryFrame}>
         <Loader />
-        {console.log(savedImages)}
         {savedImages.length !== 0 ? (
           <ul className={`${css.movieGallery} gallery`}>
             {savedImages.map(savedImage => (
