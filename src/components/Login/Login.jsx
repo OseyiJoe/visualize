@@ -85,7 +85,7 @@ export const Login = () => {
                     You're Registered, you can login now
                   </div>
                   <div className={css.inputTextInfo}>
-                    Logout to Register another account
+                    Enjoy!!!
                   </div>
                 </>
               )}
