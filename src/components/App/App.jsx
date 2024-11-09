@@ -36,8 +36,8 @@ export const App = () => {
     dispatch(refreshUser());
     dispatch(fetchPopularVideos());
     dispatch(fetchPopularImages());
-    dispatch(fetchSavedVideos());
-    dispatch(fetchSavedImages());
+    //dispatch(fetchSavedVideos());
+    //dispatch(fetchSavedImages());
     dispatch(retrieveKey());
   }, [dispatch]);
 
@@ -56,7 +56,7 @@ export const App = () => {
             <AuthRegisterRoute redirectTo="/" component={<Register />} />
           }
         />
-
+          {/*<Route path="register" element={<Register />} />*/}
         <Route
           path="Home"
           element={<SecureRoute redirectTo="/" component={<Home />} />}

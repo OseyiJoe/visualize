@@ -5,6 +5,7 @@ import TheAuthAPI from 'theauthapi';
 //import jwt from 'jsonwebtoken';
 import { SignJWT } from 'jose';
 import { jwtVerify } from 'jose';
+import {refreshUser} from "../Auth/operations"
 //import { createHmac } from 'crypto-browserify'; // jose requires KeyLike keys
 
 const accessKey = 'live_access_JrYRqAaVpzu32N2jVYfkSrT0fuef00cv6sOr9nxsXxzbJvIbgSstsVZ6WrFTtHcA';
@@ -84,7 +85,17 @@ export const createKey = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
 
-      const myClient = clients.find(client => client.token === persistedToken);
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        alert('SESSION EXPIRED, LOGIN AGAIN');
+        window.location.reload();
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      const myClient = clients.find(client => client.id === payObj.id);
       if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
@@ -100,7 +111,7 @@ export const createKey = createAsyncThunk(
       alert("KEY CREATED");
       const payload = { apKey: key.key };
       //console.log(jwt);
-      const secretKey = 'thisisaverysecurekey1234567890';
+      
     
       const myToken = await signJWT(payload, secretKey, {
         algorithm: 'HS256',
@@ -136,13 +147,23 @@ export const updateKey = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
 
-      const myClient = clients.find(client => client.token === persistedToken);
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        alert('SESSION EXPIRED, LOGIN AGAIN');
+        window.location.reload();
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      const myClient = clients.find(client => client.id === payObj.id);
       if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
       }
       //console.log(myClient);
-      const secretKey = 'thisisaverysecurekey1234567890';
+
 
       const relKey = await verifyJWT(myClient.apiKey, secretKey);
       //console.log(relKey);
@@ -176,6 +197,7 @@ export const updateKey = createAsyncThunk(
       return key;
     } catch (e) {
       console.log("Couldn't make the key ", e);
+      refreshUser();
       return thunkAPI.rejectWithValue(e.message);
     }
   }
@@ -194,13 +216,23 @@ export const deleteKey = createAsyncThunk(
       const res = await axios.get('/clientData');
       const clients = res.data;
 
-      const myClient = clients.find(client => client.token === persistedToken);
-      if (!myClient) {
-        const error = new Error(`Not Authorized`);
-        error.status = 401;
-      }
+       const secretKey = 'thisisaverysecurekey1234567890';
+       //console.log(persistedToken);
+       const payObj = await verifyJWT(persistedToken, secretKey);
+       //console.log(payObj);
+       if (!payObj) {
+         alert('SESSION EXPIRED, LOGIN AGAIN');
+         window.location.reload();
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+       }
+       const myClient = clients.find(client => client.id === payObj.id);
+       if (!myClient) {
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+       }
       //console.log(myClient);
-      const secretKey = 'thisisaverysecurekey1234567890';
+      
 
       const relKey = await verifyJWT(myClient.apiKey, secretKey);
       //console.log(relKey);
@@ -309,14 +341,21 @@ export const searchVideos = createAsyncThunk(
     try {
       const res = await axios.get('/clientData');
       const clients = res.data;
-      const myClient = clients.find(client => client.token === persistedToken);
-      if (!myClient) {
-        const error = new Error(`Not Authorized`);
-        error.status = 401;
-        throw error;
-      }
-
-       const secretKey = 'thisisaverysecurekey1234567890';
+        const secretKey = 'thisisaverysecurekey1234567890';
+        //console.log(persistedToken);
+        const payObj = await verifyJWT(persistedToken, secretKey);
+        //console.log(payObj);
+        if (!payObj) {
+          alert('SESSION EXPIRED, LOGIN AGAIN');
+          window.location.reload();
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
+        const myClient = clients.find(client => client.id === payObj.id);
+        if (!myClient) {
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
        const payload = await verifyJWT(myClient.apiKey, secretKey);
 
 
@@ -363,12 +402,21 @@ export const searchMoreVideos = createAsyncThunk(
     try {
       const res = await axios.get('/clientData');
       const clients = res.data;
-      const myClient = clients.find(client => client.token === persistedToken);
-      if (!myClient) {
-        const error = new Error(`Not Authorized`);
-        error.status = 401;
-        throw error;
-      }
+        const secretKey = 'thisisaverysecurekey1234567890';
+        //console.log(persistedToken);
+        const payObj = await verifyJWT(persistedToken, secretKey);
+        //console.log(payObj);
+        if (!payObj) {
+          alert('SESSION EXPIRED, LOGIN AGAIN');
+          window.location.reload();
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
+        const myClient = clients.find(client => client.id === payObj.id);
+        if (!myClient) {
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
       //
       const response = await client.videos.search({
         query,
@@ -433,14 +481,23 @@ export const searchImages = createAsyncThunk(
     try {
       const res = await axios.get('/clientData');
       const clients = res.data;
-      const myClient = clients.find(client => client.token === persistedToken);
-      if (!myClient) {
-        const error = new Error(`Not Authorized`);
-        error.status = 401;
-        throw error;
-      }
-
         const secretKey = 'thisisaverysecurekey1234567890';
+        //console.log(persistedToken);
+        const payObj = await verifyJWT(persistedToken, secretKey);
+        //console.log(payObj);
+        if (!payObj) {
+          alert('SESSION EXPIRED, LOGIN AGAIN');
+          window.location.reload();
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
+        const myClient = clients.find(client => client.id === payObj.id);
+        if (!myClient) {
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
+
+        
         const payload = await verifyJWT(myClient.apiKey, secretKey);
 
       if (myClient.apiKey === null) {
@@ -487,12 +544,21 @@ export const searchMoreImages = createAsyncThunk(
     try {
        const res = await axios.get('/clientData');
        const clients = res.data;
-       const myClient = clients.find(client => client.token === persistedToken);
-       if (!myClient) {
-         const error = new Error(`Not Authorized`);
-         error.status = 401;
-         throw error;
-       }
+        const secretKey = 'thisisaverysecurekey1234567890';
+        //console.log(persistedToken);
+        const payObj = await verifyJWT(persistedToken, secretKey);
+        //console.log(payObj);
+        if (!payObj) {
+          alert('SESSION EXPIRED, LOGIN AGAIN');
+          window.location.reload();
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
+        const myClient = clients.find(client => client.id === payObj.id);
+        if (!myClient) {
+          const error = new Error(`Not Authorized`);
+          error.status = 401;
+        }
       const response = await client.photos.search({
         query,
         per_page: moreImgs,
@@ -518,14 +584,21 @@ export const saveVideos = createAsyncThunk(
     try {
       const res = await axios.get('/clientData');
       const clients = res.data;
-      const myClient = clients.find(client => client.token === persistedToken);
-      if (!myClient) {
-        const error = new Error(`Not Authorized`);
-        error.status = 401;
-        throw error;
-      }
-
-      const secretKey = 'thisisaverysecurekey1234567890';
+     const secretKey = 'thisisaverysecurekey1234567890';
+     //console.log(persistedToken);
+     const payObj = await verifyJWT(persistedToken, secretKey);
+     //console.log(payObj);
+     if (!payObj) {
+       alert('SESSION EXPIRED, LOGIN AGAIN');
+       window.location.reload();
+       const error = new Error(`Not Authorized`);
+       error.status = 401;
+     }
+     const myClient = clients.find(client => client.id === payObj.id);
+     if (!myClient) {
+       const error = new Error(`Not Authorized`);
+       error.status = 401;
+     }
       const payload = await verifyJWT(myClient.apiKey, secretKey);
       
 
@@ -546,7 +619,7 @@ export const saveVideos = createAsyncThunk(
          error.status = 401;
          throw error;
        }
-      await axios.post('/clientVideos', { video_files, owner: myClient.token });
+      await axios.post('/clientVideos', { video_files, owner: myClient.id });
 
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -579,14 +652,21 @@ export const saveImages = createAsyncThunk(
     try {
       const res = await axios.get('/clientData');
       const clients = res.data;
-      const myClient = clients.find(client => client.token === persistedToken);
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        alert('SESSION EXPIRED, LOGIN AGAIN');
+        window.location.reload();
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      const myClient = clients.find(client => client.id === payObj.id);
       if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
-        throw error;
       }
-
-       const secretKey = 'thisisaverysecurekey1234567890';
        const payload = await verifyJWT(myClient.apiKey, secretKey);
 
       if (myClient.apiKey === null) {
@@ -614,7 +694,7 @@ export const saveImages = createAsyncThunk(
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ image_files, owner: myClient.token }),
+          body: JSON.stringify({ image_files, owner: myClient.id }),
         }
       );
 
@@ -644,11 +724,21 @@ export const fetchSavedImages = createAsyncThunk(
     try {
        const res = await axios.get('/clientData');
        const clients = res.data;
-       const myClient = clients.find(client => client.token === persistedToken);
-       if (!myClient) {
-         const error = new Error(`Not Authorized`);
-         error.status = 401;
-       }
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        alert('SESSION EXPIRED, LOGIN AGAIN');
+        window.location.reload();
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      const myClient = clients.find(client => client.id === payObj.id);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
 
       const response = await fetch(
         `https://6656017a3c1d3b60293beb10.mockapi.io/clientImages`
@@ -660,7 +750,7 @@ export const fetchSavedImages = createAsyncThunk(
       }
 
       const data = await response.json(); 
-      const myData = data.filter(data => data.owner === myClient.token);
+      const myData = data.filter(data => data.owner === myClient.id);
       //console.log(myData);
       return myData;
     } catch (error) {
@@ -707,14 +797,24 @@ export const fetchSavedVideos = createAsyncThunk(
     try {
       const res = await axios.get('/clientData');
       const clients = res.data;
-      const myClient = clients.find(client => client.token === persistedToken);
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        alert('SESSION EXPIRED, LOGIN AGAIN');
+        window.location.reload();
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      const myClient = clients.find(client => client.id === payObj.id);
       if (!myClient) {
         const error = new Error(`Not Authorized`);
         error.status = 401;
       }
       const response = await axios.get('/clientVideos');
       //console.log(response.data);
-      const myData = response.data.filter(data => data.owner === myClient.token);
+      const myData = response.data.filter(data => data.owner === myClient.id);
       //console.log(myData)
       return myData;
     } catch (e) {

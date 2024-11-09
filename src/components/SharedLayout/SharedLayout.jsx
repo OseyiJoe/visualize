@@ -12,10 +12,11 @@ import {
 import css from './SharedLayout.module.css';
 import { Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import { logUserOut } from '../../redux/Auth/operations';
+import { logUserOut, newReg } from '../../redux/Auth/operations';
 import { useSelector } from 'react-redux';
 import { selectIfLoggedIn } from '../../redux/Auth/selectors';
 import { Loader } from '../AuthLoader/Loader';
+import { useNavigate } from 'react-router-dom';
 //import { useEffect } from 'react';
 //import { selectVotes } from '../../redux/Application/selectors';
 //import { useSelector } from 'react-redux';
@@ -23,9 +24,17 @@ import { Loader } from '../AuthLoader/Loader';
 export const SharedLayout = () => {
   const ifLoggedIn = useSelector(selectIfLoggedIn);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleClick = () => {
-  dispatch(logUserOut());
-}
+    dispatch(logUserOut());
+  }
+  const handleButtonPress = () => {
+    dispatch(newReg());
+    setTimeout(() => {
+     navigate('/register');
+    }, 50);
+    
+  }
   
 
   return (
@@ -68,9 +77,14 @@ export const SharedLayout = () => {
           </button>
         )}
         {ifLoggedIn === false && (
-          <Linker to="/register" className={css.button}>
-            Register
-          </Linker>
+          
+            <Linker
+              className={css.button}
+              onClick={handleButtonPress}
+            >
+              Register
+            </Linker>
+          
         )}
       </Header>
       <main className={css.home}>

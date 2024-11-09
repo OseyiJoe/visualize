@@ -90,7 +90,7 @@ export const Link = styled(NavLink)`
   }
 `;
 
-export const Linker = styled(NavLink)`
+export const Linker = styled.button`
   width:70px;
   height:70px;
   border-radius: 50%;

@@ -37,7 +37,13 @@ export async function verifyJWT(token, secretOrPrivateKey, algorithm = 'HS256') 
   }
 }
 
-
+export const newReg = createAsyncThunk(
+  'auth/newReg',
+  async (_, thunkAPI) => {
+    //window.location.reload();
+    return true;
+  }
+);
 
 export const addUser = createAsyncThunk(
   'auth/addUser',
@@ -48,9 +54,23 @@ export const addUser = createAsyncThunk(
       //console.log(jwt);
       const secretKey = 'thisisaverysecurekey1234567890';
 
+      const users = await axios.get('/clientData');
+      const clients = users.data;
+
+
       const myMail = await signJWT(payload, secretKey, {
         algorithm: 'HS256',
       });
+      
+      const duplicate = clients.find(client => client.email === myMail);
+
+      if (duplicate) {
+        alert('This email has already been used to register.');
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+        throw error;
+      }
+
       const response = await axios.post('/clientData', {
         name,
         email:myMail,
@@ -61,6 +81,8 @@ export const addUser = createAsyncThunk(
         apiCreationDate: null,
         apiMetaData:null
       });
+      alert("You are registered, now you can login");
+      //window.location.reload();
       //console.log(response.data);
       return response.data;
     } catch (e) {
@@ -110,7 +132,19 @@ export const logUserIn = createAsyncThunk(
         alert('Incorrect email or password');
         throw error; 
       }
-      return myClient;
+      const payload = {
+  id:myClient.id, // other data you want to include in the payload
+  exp: Math.floor(Date.now() / 1000) + (60 * 30), // Expires in 30 minutes
+};
+
+const myToken = await signJWT(payload, secretKey, {
+  algorithm: 'HS256',
+});
+      const update = await axios.put(`/clientData/${myClient.id}`, {
+        token: myToken
+      });
+      //console.log(update.data);
+      return update.data;
       
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -120,11 +154,37 @@ export const logUserIn = createAsyncThunk(
 
 
 export const logUserOut = createAsyncThunk('auth/logUserOut', async (_, thunkAPI) => {
-  try {
-    await axios.get('/clientData');
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+   const state = thunkAPI.getState();
+   const persistedToken = state.auth.token;
+
+   if (persistedToken === null) {
+     return thunkAPI.rejectWithValue('Unable to fetch user');
   }
+  
+    try {
+      const response = await axios.get('/clientData');
+      const clients = response.data;
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        alert('SESSION EXPIRED, LOGIN AGAIN');
+         const error = new Error(`Not Authorized`);
+         error.status = 401;
+       }
+      const myClient = clients.find(client => client.id === payObj.id);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+     const update = await axios.put(`/clientData/${myClient.id}`, {
+       token: "",
+     });
+      //console.log(update.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
 });
 
 
@@ -143,13 +203,20 @@ export const refreshUser = createAsyncThunk(
     try {
       const response = await axios.get('/clientData');
       const clients = response.data;
-      const myClient = clients.find(
-        client => client.token === persistedToken
-      );
-        if (myClient.length === 0) {
-          const error = new Error(`Not Authorized`);
-          error.status = 401;
-        }
+      const secretKey = 'thisisaverysecurekey1234567890';
+      //console.log(persistedToken);
+      const payObj = await verifyJWT(persistedToken, secretKey);
+      //console.log(payObj);
+      if (!payObj) {
+        //alert('SESSION EXPIRED, LOGIN AGAIN');
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
+      const myClient = clients.find(client => client.id === payObj.id);
+      if (!myClient) {
+        const error = new Error(`Not Authorized`);
+        error.status = 401;
+      }
         return myClient;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
